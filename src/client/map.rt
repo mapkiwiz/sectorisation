@@ -1,0 +1,35 @@
+<rt-import name="Map" from="./app/shared/components/leaflet/map.component" />
+<rt-import name="TileLayer" from="./app/shared/components/leaflet/tilelayer.component" />
+<rt-import name="DataLayer" from="./app/shared/components/leaflet/datalayer.component" />
+<rt-import name="default" as="stamen" from="./layers/stamen.json" />
+<rt-import name="List" from="./app/shared/components/list/list.component" />
+
+<div>
+  <Map id="map" className="full-screen-map" view="{{ center: [46.1132, 6.4407], zoom: 9 }}">
+    <TileLayer key="{ stamen.id }" rt-props="stamen" ></TileLayer>
+    <DataLayer key="workers-layer" id="workers-layer"></DataLayer>
+  </Map>
+  <div class="container-fluid"
+       style="position: absolute; z-index: 900; top: 10px; left: 0; pointer-events: none; width: 100%;">
+    <div class="row" style="width: 100%">
+      <div class="col-md-4 col-md-offset-8"
+           style="background-color: white; border: 1px solid lightgray; padding: 15px; pointer-events: all; box-shadow: 4px 4px 5px #aaa;">
+        <h3 style="margin-top: 0px; margin-bottom: 20px">Enquêteurs</h3>
+        <div class="form">
+          <div class="input-group">
+            <input class="form-control"
+                   name="search" type="text"
+                   placeholder="Rechercher ..."
+                   autocomplete="off"
+                   onChange="{ e => this.searchItems(e) }" />
+            <div class="input-group-addon">
+              <span class="glyphicon glyphicon-search"></span>
+            </div>
+          </div>
+        </div>
+        <List items="{ this.state.visible_items }"
+              renderItem="{ (item) => item.label }"></List>
+      </div>
+    </div>
+  </div>
+</div>

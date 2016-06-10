@@ -1,0 +1,305 @@
+.top-buffer {
+  margin-top: 20px;
+}
+
+.color-1 {
+  background-color: #46b29d;
+  border: 2px solid #46b29d;
+}
+
+.color-2 {
+  background-color: #f0ca4d;
+  border: 2px solid #f0ca4d;
+}
+
+.color-3 {
+  background-color: #e37b40;
+  border: 2px solid #e37b40;
+}
+
+.color-4 {
+  background-color: #de4949;
+  border: 2px solid #de4949;
+}
+
+.color-5 {
+  background-color: #324d5c;
+  border: 2px solid #324d5c;
+}
+
+.color-1,
+.color-2,
+.color-3,
+.color-4,
+.color-5 {
+  color: #333;
+}
+
+.btn-circle {
+  border-radius: 50px;
+  padding: 8px 14px;
+  font-weight: bold;
+}
+
+span.question {
+  border: 2px solid #324d5c;
+  padding: 1em 2em;
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #324d5c;
+  color: white;
+}
+
+.tree ul,
+.tree li {
+  margin: 0;
+}
+
+.tree li {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.tree ul {
+  padding-top: 20px;
+  padding-left: 0;
+  position: relative;
+  width: 100%;
+
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+}
+
+.tree li {
+  float: left;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 20px 10px 0 5px;
+  width: 50%;
+
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+}
+
+.tree li.last-child {
+  text-align: left;
+}
+
+/* We will use ::before and ::after to draw the connectors */
+.tree li::before,
+.tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top: 2px solid #324d5c;
+  width: 50%;
+  height: 20px;
+}
+
+.tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid #324d5c;
+}
+
+/* We need to remove left-right connectors from elements without
+any siblings */
+.tree li:only-child::after,
+.tree li:only-child::before {
+  display: none;
+}
+
+/* Remove space from the top of single children */
+.tree li:only-child {
+  padding-top: 0;
+}
+
+/* Remove left connector from first child and
+right connector from last child */
+.tree li:first-child::before,
+.tree li:last-child::after {
+  border: 0 none;
+}
+
+/* Adding back the vertical connector to the last nodes */
+.tree li:last-child::before {
+  border-right: 2px solid #324d5c;
+  border-radius: 0 5px 0 0;
+  -webkit-border-radius: 0 5px 0 0;
+  -moz-border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+  border-radius: 5px 0 0 0;
+  -webkit-border-radius: 5px 0 0 0;
+  -moz-border-radius: 5px 0 0 0;
+}
+
+/* Time to add downward connectors from parents */
+.tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid #324d5c;
+  width: 0;
+  height: 20px;
+}
+
+.tree ul ul.last-child::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -15px;
+  border-left: 2px solid #324d5c;
+  border-top: 2px solid #324d5c;
+  width: 15px;
+  height: 40px !important;
+}
+
+.tree li:only-child,
+.tree li.last-child {
+  width: 100% !important;
+}
+
+.tree li.last-child::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -15px;
+  border-right: none;
+  border-top: none;
+  border-bottom: 2px solid #324d5c;
+  border-left: 2px solid #324d5c;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  width: 15px;
+  height: 60px;
+}
+
+.tree li.last-child:last-child::after {
+  border: none;
+  top: 0;
+}
+
+.tree li.last-child::after {
+  border: none;
+}
+
+
+@media screen and (min-width: 992px) {
+  .tree ul.mobile-question li ul.last-child::before {
+    left: 35px;
+    border-top: none;
+  }
+
+  .tree ul.mobile-question li ul.last-child li.last-child {
+    left: 50px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .tree ul.mobile-question li ul.last-child::before {
+    left: 30px;
+    border-top: none;
+  }
+
+  .tree ul.mobile-question li ul.last-child li.last-child {
+    left: 45px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .tree ul ul.mobile-child::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    border-left: 2px solid #324d5c;
+    border-top: 2px solid #324d5c;
+    width: 40%;
+    height: 40px !important;
+  }
+
+  .tree ul ul.last-child::before {
+    width: 50% !important;
+  }
+
+  .tree li.mobile-child > ul.last-child::before {
+    border-top: none;
+  }
+
+  .tree ul.mobile-question li ul.last-child::before {
+    left: 40px;
+    border-top: none;
+  }
+
+  .tree ul.mobile-question li ul.last-child li.last-child {
+    left: 55px;
+  }
+
+  .tree li.mobile-child ul.last-child {
+    margin-left: 8px !important;
+  }
+
+  .tree li.mobile-child {
+    width: 100% !important;
+    text-align: left;
+  }
+
+  .tree li.mobile-child::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    border-right: none;
+    border-top: none;
+    border-bottom: 2px solid #324d5c;
+    border-left: 2px solid #324d5c;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    width: 15px;
+    height: 60px;
+  }
+
+  .tree li.mobile-child.question {
+    text-align: center;
+  }
+
+  .tree li.mobile-child.question::before {
+    width: 50%;
+    height: 55px;
+    top: 0;
+  }
+
+  .tree ul ul.mobile-child.last-child::before {
+    width: 50%;
+  }
+
+  .tree li.mobile-child:last-child::after {
+    border: none;
+    top: 0;
+  }
+
+  .tree li.mobile-child.question::after {
+    border-left: 2px solid #324d5c;
+    left: -15px;
+    height: 100%;
+    width: 1px;
+  }
+
+  .tree li.mobile-child.question:last-child::after {
+    border-left: none;
+  }
+
+  .tree li.mobile-child::after {
+    border: none;
+  }
+}

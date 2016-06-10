@@ -1,0 +1,192 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as Redux from 'redux';
+ReactRedux = require('react-redux');
+import {List, ListHeader} from './app/shared/components/list.component';
+import {reducer} from './app/reducers/index';
+
+// interface AppProps {
+//   title: string;
+// };
+//
+// interface AppState {
+//   running: boolean;
+//   title: string;
+//   items: Array<any>;
+//   visible_items: Array<any>;
+//   selected: Array<number>;
+// }
+
+export class App extends React.Component {
+
+  // context: any;
+  // dispose: Function;
+
+  constructor(props: AppProps, context: any) {
+    super(props, context);
+    this.state = this.mapContextToState();
+  }
+
+  mapContextToState(): AppState {
+    return this.context.store.getState();
+  }
+
+  componentDidMount() {
+    this.dispose =
+      this.context.store.subscribe(() => {
+        this.setState(this.mapContextToState());
+      });
+  }
+
+  componentWillUnmount() {
+    this.dispose();
+  }
+
+  doAction(action: any) {
+    this.context.store.dispatch(action);
+  }
+
+  filter(e: React.MouseEvent) {
+    this.doAction({
+      type: 'FILTER',
+      filter: (item: any) => {
+        return (item.id % 2) == 1;
+      }
+    });
+    e.preventDefault();
+    return false;
+  }
+
+  unfilter(e: React.MouseEvent) {
+    this.doAction({
+      type: 'RESET_FILTER'
+    });
+    e.preventDefault();
+    return false;
+  }
+
+  scroll(e: React.MouseEvent, index: number) {
+    this.doAction({
+      type: 'SCROLL_TO',
+      index: index
+    });
+    e.preventDefault();
+    return false;
+  }
+
+  public render() {
+    return (
+      <div>
+        <div className="row">
+      <div className="col-md-6 col-md-offset-2">
+        <h1>{ this.props.title }</h1>
+    </div>
+    </div>
+    <div className="row">
+    <div className="col-md-6 col-md-offset-2">
+      <ListHeader>
+        <h3>{ this.state.title }</h3>
+    </ListHeader>
+    <List items={ this.state.visible_items } renderItem={ (item) => item.label + ' (id=' + item.id + ')'}></List>
+    </div>
+    <div className="col-md-2">
+    <ul>
+      <li><a href="#" onClick={ e => this.filter(e) }>filter list</a></li>
+    <li><a href="#" onClick={ e => this.unfilter(e) }>full list</a></li>
+    <li><a href="#" onClick={ e => this.scroll(e, 1) }>scroll to 1</a></li>
+    <li><a href="#" onClick={ e => this.scroll(e, 2) }>scroll to 2</a></li>
+    <li><a href="#" onClick={ e => this.scroll(e, 10) }>scroll to 10</a></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  );
+  }
+
+}
+
+App.propTypes = {
+
+}
+
+App.contextTypes = {
+  store: React.PropTypes.object
+};
+
+// let select = (state = {}, action) => {
+//   switch (action.type) {
+//     case 'SELECT':
+//       return Object.assign({}, state, { [action.id]: { selected: true }});
+//     case 'SELECT_ONE':
+//       let selected = {};
+//       for (var key in state) {
+//         if (state.hasOwnProperty(key)) {
+//           selected[key] = { selected: (key === action.id) };
+//         }
+//       }
+//       return selected;
+//     case 'UNSELECT':
+//       return Object.assign({}, state, { [action.id]: { selected: false }});
+//     default:
+//       return state;
+//   }
+// };
+//
+// let reducer = Redux.combineReducers({ selected: select });
+
+let Provider = ReactRedux.Provider;
+
+(function() {
+
+  let items = [
+    { id: 1, label: 'Albert Allemand' },
+    { id: 2, label: 'Bernard Brosse' },
+    { id: 3, label: 'Charlie Chan' },
+    { id: 4, label: 'David Dupont' },
+    { id: 5, label: 'David Dupont' },
+    { id: 6, label: 'David Dupont' },
+    { id: 7, label: 'David Dupont' },
+    { id: 8, label: 'David Dupont' },
+    { id: 9, label: 'David Dupont' },
+    { id: 10, label: 'David Dupont' },
+    { id: 11, label: 'David Dupont' },
+    { id: 12, label: 'David Dupont' },
+    { id: 13, label: 'David Dupont' },
+    { id: 14, label: 'David Dupont' },
+    { id: 15, label: 'David Dupont' },
+    { id: 16, label: 'David Dupont' },
+    { id: 17, label: 'David Dupont' },
+    { id: 18, label: 'David Dupont' },
+    { id: 19, label: 'David Dupont' },
+    { id: 20, label: 'David Dupont' }
+  ];
+
+  let store = Redux.createStore(reducer);
+
+  ReactDOM.render(
+    <Provider store={ store }><App title="Hello World"></App></Provider>,
+    document.getElementById("main")
+  );
+
+  store.dispatch({
+    type: 'SET_LIST_TITLE',
+    title: 'This is a new  list title'
+  });
+
+  store.dispatch({
+    type: 'SET_ITEMS',
+    items: items
+  });
+
+  store.dispatch({
+    type: 'SCROLL_TO',
+    index: 10
+  });
+
+  //store.dispatch({ type: 'SELECT', id: 3 });
+  //store.dispatch({ type: 'SELECT', id: 1 });
+  //store.dispatch({ type: 'SELECT', id: 5 });
+  //store.dispatch({ type: 'UNSELECT', id: 1 });
+  console.log(store.getState());
+
+})();

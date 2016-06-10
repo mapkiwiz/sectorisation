@@ -1,0 +1,44 @@
+.top-buffer {
+  margin-top: 20px;
+}
+
+.color-1 {
+  background-color: #46b29d;
+}
+
+.color-2 {
+  background-color: #f0ca4d;
+}
+
+.color-3 {
+  background-color: #e37b40;
+}
+
+.color-4 {
+  background-color: #de4949;
+}
+
+.color-5 {
+  background-color: #324d5c;
+}
+
+.color-1,
+.color-2,
+.color-3,
+.color-4,
+.color-5 {
+  color: white;
+}
+
+.btn-circle {
+  border-radius: 50px;
+  margin-top: 1em;
+}
+
+.question {
+  border: 1px solid black;
+  padding: 1em 2em;
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+}
