@@ -12,10 +12,13 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-2">
       <ListHeader>
-        <h3>{ this.state.title }</h3>
+        <h3>Titre de la liste</h3>
       </ListHeader>
-      <List items="{ this.state.visible_items }"
-            renderItem="{ (item) => item.label + ' (id=' + item.id + ')'}"></List>
+      <List items="{ this.state.workers.visible_items }"
+            renderItem="{ (item) => item.label }"
+            actionPrefix="WORKER_"
+            mapState="{ state => ({ items: state.workers.items, selected: state.workers.selected, scrollIndex: state.workers.scrollIndex }) }">
+      </List>
     </div>
     <div class="col-md-2">
       <h4>Recherche</h4>

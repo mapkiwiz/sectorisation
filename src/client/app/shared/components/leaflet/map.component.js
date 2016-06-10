@@ -7,18 +7,19 @@ export class LayerRegistry {
 
   map;
   layers = {};
+  order = [];
 
   addLayer(key, layer) {
     this.layers[key] = layer;
+    this.order.push(key);
   }
 
   addTo(map) {
     this.map = map;
-    for (var layer in this.layers) {
-      if (this.layers.hasOwnProperty(layer)) {
-        this.map.addLayer(this.layers[layer]);
-      }
-    }
+    this.order.forEach(key => {
+      console.log(key);
+      this.map.addLayer(this.layers[key]);
+    });
   }
 
 }

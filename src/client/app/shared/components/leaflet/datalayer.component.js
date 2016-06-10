@@ -8,7 +8,17 @@ export class DataLayer extends React.Component {
   dispose;
 
   static propTypes = {
-    id: React.PropTypes.string.isRequired
+    id: React.PropTypes.string.isRequired,
+    actionPrefix: React.PropTypes.string,
+    mapState: React.PropTypes.func
+  };
+
+  static defaultProps = {
+    actionPrefix: '',
+    mapState: state => ({
+      items: state.visible_items,
+      selected: state.selected
+    })
   };
 
   static contextTypes = {
@@ -22,10 +32,16 @@ export class DataLayer extends React.Component {
     this.state = this.mapContextToState();
   }
 
+  get actionPrefix() {
+    return this.props.actionPrefix;
+  }
+
+  get layerOptions() {
+    return {};
+  }
+
   mapContextToState() {
-    return {
-      items: this.context.store.getState().visible_items
-    };
+    return this.props.mapState(this.context.store.getState());
   }
 
   shouldComponentUpdate() {
@@ -33,48 +49,34 @@ export class DataLayer extends React.Component {
   }
 
   componentDidMount() {
-    let popovers = Leaflet.layerGroup();
-    let popover = new Popover({ direction: 'bottom', closeable: true });
-    popover.setTitle('Enquêteur');
-    let options = {
-      pointToLayer: (feature, latLng) => {
+    // let popovers = Leaflet.layerGroup();
+    // let popover = new Popover({ direction: 'bottom', closeable: true });
+    // popover.setTitle('Enquêteur');
 
-        var icon = Leaflet.divIcon({
-          className: 'feature-marker',
-          html: '<span class="glyphicon glyphicon-map-marker"></span>',
-          iconSize: Leaflet.point(30, 30),
-          iconAnchor: Leaflet.point(16, 30)
-        });
-
-        return Leaflet.marker(latLng, {icon: icon});
-
-      },
-      onEachFeature: (feature, marker) => {
-        marker.on('click', () => {
-          // popover.setContent('<p>' + feature.label + '</p>');
-          // popover.setLatLng(marker.getLatLng());
-          // if (!popover._map) popovers.addLayer(popover);
-          this.context.store.dispatch({
-            type: 'SELECT_ONE',
-            id: feature.id
-          });
-          this.context.store.dispatch({
-            type: 'SCROLL_TO',
-            index: feature.id
-          });
-        });
-      }
-    };
-    this.__leaflet_component__ = Leaflet.geoJson(null, options);
+    this.__leaflet_component__ = Leaflet.geoJson(null, this.layerOptions);
     this.updateLayer();
     this.context.registry.addLayer(this.props.id, this.__leaflet_component__);
-    this.context.registry.addLayer('popovers', popovers);
+    // this.context.registry.addLayer('popovers', popovers);
     this.dispose = this.context.store.subscribe(() => {
       let newState = this.mapContextToState();
       if (newState.items != this.state.items) {
-        popover.close();
         this.state = newState;
         this.updateLayer();
+      }
+      if (newState.selected != this.state.selected) {
+        this.state = newState;
+        this.updateSelection();
+      }
+    });
+  }
+
+  updateSelection() {
+    Object.keys(this.__leaflet_component__._layers).forEach(key => {
+      let marker = this.__leaflet_component__._layers[key];
+      if (this.state.selected.includes(marker.feature.id)) {
+        marker._icon.classList.add('feature-marker-selected');
+      } else {
+        marker._icon.classList.remove('feature-marker-selected');
       }
     });
   }
@@ -92,12 +94,12 @@ export class DataLayer extends React.Component {
   updateLayer() {
     console.log('Update data layer ' + this.props.id);
     let layer = this.__leaflet_component__;
-    console.log(layer);
     if (layer) {
       layer.clearLayers();
       this.state.items.forEach(item => {
         layer.addData(this.itemToGeoJSON(item));
       });
+      this.updateSelection();
     }
   }
 

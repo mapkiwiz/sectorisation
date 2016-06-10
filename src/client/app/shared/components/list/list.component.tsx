@@ -3,6 +3,7 @@ import {ListItem} from './list.item.component.tsx';
 const tween = require('tween.js');
 
 interface ListProps<T> {
+  actionPrefix: string,
   items: Array<T>;
   renderItem: Function;
   mapState: Function;
@@ -79,7 +80,7 @@ export class List<T> extends React.Component<ListProps<T>, {}> {
   componentDidMount() {
     this.dispose =
       this.context.store.subscribe(() => {
-        let to = this.context.store.getState().scrollIndex;
+        let to = this.props.mapState(this.context.store.getState()).scrollIndex;
         if (to)
           this.scrollTo(to);
       });
@@ -111,7 +112,12 @@ export class List<T> extends React.Component<ListProps<T>, {}> {
   render() {
     let items = this.props.items.map(item => {
       return (
-        <ListItem key={ item.id } id={ item.id } item={ item } renderItem={ this.props.renderItem }></ListItem>
+        <ListItem key={ item.id }
+                  id={ item.id }
+                  item={ item }
+                  actionPrefix={ this.props.actionPrefix }
+                  renderItem={ this.props.renderItem }>
+        </ListItem>
       );
     });
     return (

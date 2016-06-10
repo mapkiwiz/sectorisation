@@ -67,7 +67,7 @@ export class App extends React.Component {
 
   filterByLabel(query) {
     this.doAction({
-      type: 'FILTER',
+      type: 'WORKER_FILTER',
       filter: (item) => {
         return item.label.toLowerCase().contains(query.toLowerCase());
       }
@@ -76,7 +76,7 @@ export class App extends React.Component {
 
   unfilter(e) {
     this.doAction({
-      type: 'RESET_FILTER'
+      type: 'WORKER_RESET_FILTER'
     });
     e.preventDefault();
     return false;

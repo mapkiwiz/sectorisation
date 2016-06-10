@@ -3,7 +3,8 @@ import * as React from 'react';
 export interface  ListItemProps<T> {
   id: number;
   item: T;
-  renderItem: Function
+  renderItem: Function,
+  actionPrefix: string
 }
 
 export interface ListItemState {
@@ -53,15 +54,15 @@ export class ListItem<T> extends React.Component<ListItemProps<T>, ListItemState
   }
 
   select() {
-    return { type: 'SELECT', id: this.props.id };
+    return { type: this.props.actionPrefix + 'SELECT', id: this.props.id };
   }
 
   unselect() {
-    return { type: 'UNSELECT', id: this.props.id };
+    return { type: this.props.actionPrefix + 'UNSELECT', id: this.props.id };
   }
 
   selectOne() {
-    return { type: 'SELECT_ONE', id: this.props.id };
+    return { type: this.props.actionPrefix + 'SELECT_ONE', id: this.props.id };
   }
 
   componentDidMount() {

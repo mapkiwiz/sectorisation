@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import {reducer} from './app/reducers/index';
 import {App} from './app';
 import fetch from 'isomorphic-fetch';
+import {IsochroneUpdater} from './app/updaters/isochrone.updater';
 const Redux = require('redux');
 
 // let select = (state = {}, action) => {
@@ -64,9 +65,25 @@ const Redux = require('redux');
       f.id = f.properties.gid;
     });
     store.dispatch({
-      type: 'SET_ITEMS',
+      type: 'WORKER_SET_ITEMS',
       items: data.features
     })
   });
+
+  fetch('data/us.geojson').then(response => {
+    if (response.status >= 400) throw new Error('Bad response');
+    return response.json();
+  }).then(data => {
+    data.features.forEach(f => {
+      f.label = 'US #' + f.properties.gid;
+      f.id = f.properties.gid;
+    });
+    store.dispatch({
+      type: 'TASK_SET_ITEMS',
+      items: data.features
+    })
+  });
+
+  new IsochroneUpdater(store);
 
 })();
