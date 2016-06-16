@@ -1,10 +1,10 @@
-<rt-import name="Map" from="./app/shared/components/leaflet/map.component" />
-<rt-import name="TileLayer" from="./app/shared/components/leaflet/tilelayer.component" />
-<rt-import name="WorkerLayer" from="./app/layers/worker.datalayer" />
-<rt-import name="TaskLayer" from="./app/layers/task.datalayer" />
-<rt-import name="IsochroneLayer" from="./app/layers/isochrone.datalayer" />
-<rt-import name="default" as="stamen" from="./layers/stamen.json" />
-<rt-import name="List" from="./app/shared/components/list/list.component" />
+<rt-import name="Map" from="../app/shared/components/leaflet/map.component" />
+<rt-import name="TileLayer" from="../app/shared/components/leaflet/tilelayer.component" />
+<rt-import name="WorkerLayer" from="../app/layers/worker.datalayer" />
+<rt-import name="TaskLayer" from="../app/layers/task.datalayer" />
+<rt-import name="IsochroneLayer" from="../app/layers/isochrone.datalayer" />
+<rt-import name="default" as="stamen" from="../layers/stamen.json" />
+<rt-import name="List" from="../app/shared/components/list/list.component" />
 
 <div>
   <Map id="map" className="full-screen-map" view="{{ center: [46.1132, 6.4407], zoom: 9 }}">

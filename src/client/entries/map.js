@@ -1,5 +1,5 @@
 import React from 'react';
-import template from './list.rt';
+import template from './map.rt';
 import _ from 'lodash';
 import parse from 'csv-parse';
 import {runApp} from './main';

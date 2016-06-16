@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const argv = require('yargs').argv;
+const _ = require('lodash');
 
 /*
  * Webpack Plugins
@@ -12,6 +13,28 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const ENV = argv['env'] || 'dev';
+var apps = [ 'list', 'map', 'upload' ];
+
+function loadApp(appName) {
+  /*
+   * Plugin: HtmlWebpackPlugin
+   * Description: Simplifies creation of HTML files to serve your webpack bundles.
+   * This is especially useful for webpack bundles that include a hash in the filename
+   * which changes every compilation.
+   *
+   * See: https://github.com/ampedandwired/html-webpack-plugin
+   */
+  return new HtmlWebpackPlugin({
+    unsupportedBrowser: true,
+    template: 'src/client/index.html',
+    chunksSortMode: 'dependency',
+    appMountId: 'main',
+    devServer: true,
+    mobile: true,
+    filename: appName + '.html',
+    excludeChunks: _.reject(apps, app => (app == appName))
+  });
+}
 
 module.exports = {
 
@@ -24,7 +47,9 @@ module.exports = {
     polyfills: './src/client/polyfills/index',
     styles: './src/client/styles',
     vendor: './src/client/vendor',
-    main: './src/client/main'
+    list: './src/client/entries/list',
+    map: './src/client/entries/map',
+    upload: './src/client/entries/upload'
   },
 
   output: {
@@ -99,23 +124,6 @@ module.exports = {
       { from: 'node_modules/leaflet/dist/images', to: 'images' }
     ]),
 
-    /*
-     * Plugin: HtmlWebpackPlugin
-     * Description: Simplifies creation of HTML files to serve your webpack bundles.
-     * This is especially useful for webpack bundles that include a hash in the filename
-     * which changes every compilation.
-     *
-     * See: https://github.com/ampedandwired/html-webpack-plugin
-     */
-    new HtmlWebpackPlugin({
-      unsupportedBrowser: true,
-      template: 'src/client/index.html',
-      chunksSortMode: 'dependency',
-      appMountId: 'main',
-      devServer: true,
-      mobile: true
-    }),
-
     new webpack.optimize.OccurenceOrderPlugin(),
 
     new webpack.DefinePlugin({
@@ -128,5 +136,6 @@ module.exports = {
 
     new ExtractTextPlugin('[name].css')
 
-  ]
-}
+  ].concat(apps.map(loadApp))
+
+};

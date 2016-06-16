@@ -1,5 +1,6 @@
 import React from 'react';
 import Leaflet from 'leaflet';
+import {IsochroneUpdater} from '../updaters/isochrone.updater';
 
 export class IsochroneLayer extends  React.Component {
 
@@ -48,12 +49,15 @@ export class IsochroneLayer extends  React.Component {
       }
     });
 
+    this.updater = new IsochroneUpdater(this.context.store);
+
   }
 
   componentWillUnmount() {
     this.dispose();
     this.__leaflet_component__.remove();
     this.__leaflet_component__ = undefined;
+    this.updater.dispose();
   }
 
   updateLayer() {

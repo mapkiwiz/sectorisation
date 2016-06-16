@@ -3,12 +3,10 @@ import fetchJsonp from 'fetch-jsonp';
 import URLSearchParams from 'url-search-params';
 import {parse} from 'wellknown';
 import concaveHull from 'concaveman';
+import {config} from '../../config/index';
 
-const gpp_key = "50bejnu55v5ievgkbvzxas6s";
-const gpp_isochrone_url = "https://wxs.ign.fr/" + gpp_key + "/isochrone/isochrone.json";
-const gpp_referer = "http://geo.agriculture/affectation-demo";
-const distance = 20000;
-const concavity = 2;
+const distance = config.isochrone.distance;
+const concavity = config.isochrone.concavity;
 
 export class IsochroneUpdater {
 
@@ -77,9 +75,9 @@ export class IsochroneUpdater {
     search.set('graphName', 'Voiture');
     search.set('smooth', true);
 
-    fetchJsonp(gpp_isochrone_url + '?' + search.toString(), {
+    fetchJsonp(config.gpp_isochrone_url + '?' + search.toString(), {
       headers: {
-        "Referer": gpp_referer
+        "Referer": config.gpp_referer
       }
     }).then(response => {
       if (response.status >= 400) throw new Error('Bad response');
