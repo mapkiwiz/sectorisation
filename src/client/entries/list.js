@@ -1,7 +1,8 @@
 import React from 'react';
-import template from './map.rt';
+import template from './app.rt';
 import _ from 'lodash';
 import parse from 'csv-parse';
+import {runApp} from './main';
 
 function parseAsObject(data, options, callback) {
   parse(data, options, (err, out) => {
@@ -115,3 +116,9 @@ export class App extends React.Component {
   }
 
 }
+
+(function() {
+
+  runApp(App);
+
+})();

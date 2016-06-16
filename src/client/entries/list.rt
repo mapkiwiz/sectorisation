@@ -1,7 +1,7 @@
-<rt-import name="List" from="./app/shared/components/list/list.component" />
-<rt-import name="ListHeader" from="./app/shared/components/list/list.header.component" />
-<rt-import name="DropZone" from="./app/shared/components/upload/dropzone.component" />
-<rt-import name="SwitchInput" from="./app/shared/components/input/switch.component" />
+<rt-import name="List" from="../app/shared/components/list/list.component" />
+<rt-import name="ListHeader" from="../app/shared/components/list/list.header.component" />
+<rt-import name="DropZone" from="../app/shared/components/upload/dropzone.component" />
+<rt-import name="SwitchInput" from="../app/shared/components/input/switch.component" />
 
 <div class="container-fluid">
   <div class="row">

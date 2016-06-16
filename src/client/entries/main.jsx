@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {reducer} from './app/reducers/index';
-import {App} from './app';
+import {reducer} from './../app/reducers/index';
 import fetch from 'isomorphic-fetch';
-import {IsochroneUpdater} from './app/updaters/isochrone.updater';
 const Redux = require('redux');
 
 // let select = (state = {}, action) => {
@@ -28,7 +26,7 @@ const Redux = require('redux');
 //
 // let reducer = Redux.combineReducers({ selected: select });
 
-(function() {
+export function runApp(App) {
 
   let store = Redux.createStore(reducer);
 
@@ -84,6 +82,4 @@ const Redux = require('redux');
     })
   });
 
-  new IsochroneUpdater(store);
-
-})();
+}
