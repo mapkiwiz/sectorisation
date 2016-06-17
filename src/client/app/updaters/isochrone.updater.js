@@ -1,12 +1,8 @@
 import _ from 'lodash';
-import fetchJsonp from 'fetch-jsonp';
-import URLSearchParams from 'url-search-params';
-import {parse} from 'wellknown';
-import concaveHull from 'concaveman';
+import {GPPIsochroneService} from '../services/gpp.isochrone.service';
 import {config} from '../../config/index';
 
 const distance = config.isochrone.distance;
-const concavity = config.isochrone.concavity;
 
 export class IsochroneUpdater {
 
@@ -14,9 +10,15 @@ export class IsochroneUpdater {
   dispose;
   dispatching = false;
   selection;
+  isochrone_service;
 
   constructor(store) {
     this.store = store;
+    this.isochrone_service = new GPPIsochroneService({
+      url: config.gpp_isochrone_url,
+      referer: config.gpp_referer,
+      concavity: config.isochrone.concavity
+    });
     this.dispose = store.subscribe(() => {
       let selection = _.first(this.store.getState().workers.selected);
       if (selection != this.selection) {
@@ -51,7 +53,7 @@ export class IsochroneUpdater {
       if (_.has(isochrones, feature.id)) {
         this.doAction({type: 'ISOCHRONE_SELECT', key: feature.id});
       } else {
-        this.fetchIsochrone(feature, distance, (result) => {
+        this.isochrone_service.fetch(feature, distance).then(result => {
           this.doAction({type: 'ISOCHRONE_STORE', key: feature.id, payload: result});
           this.doAction({type: 'ISOCHRONE_SELECT', key: feature.id});
         });
@@ -61,36 +63,6 @@ export class IsochroneUpdater {
 
     }
 
-  }
-
-  fetchIsochrone(feature, distance, callback) {
-
-    let lon = feature.geometry.coordinates[0],
-      lat = feature.geometry.coordinates[1];
-    let search = new URLSearchParams();
-    search.set('location', [lon, lat].join(","));
-    search.set('method', 'distance');
-    search.set('holes', true);
-    search.set('distance', distance);
-    search.set('graphName', 'Voiture');
-    search.set('smooth', true);
-
-    fetchJsonp(config.gpp_isochrone_url + '?' + search.toString(), {
-      headers: {
-        "Referer": config.gpp_referer
-      }
-    }).then(response => {
-      if (response.status >= 400) throw new Error('Bad response');
-      return response.json();
-    }).then(result => {
-      let polygon = parse(result.wktGeometry);
-      callback(this.polygonToConcaveHull(polygon));
-    });
-
-  }
-
-  polygonToConcaveHull(polygon) {
-    return { type: 'Polygon', coordinates: [ concaveHull(polygon.coordinates[0], concavity) ] };
   }
 
 }

@@ -23,7 +23,14 @@ export class IsochroneLayer extends  React.Component {
   }
 
   get layerOptions() {
-    return {};
+    return {
+      style: function(feature) {
+        return {
+          weight: 2,
+          color: '#d00'
+        };
+      }
+    };
   }
 
   mapContextToState() {

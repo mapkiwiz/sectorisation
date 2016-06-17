@@ -1,17 +1,20 @@
 from bootstrap import app, db
 from models import Commune
 from config import API_PREFIX
-from ModestMaps.OpenStreetMap import Provider as OSM
+from ModestMaps.OpenStreetMap import Provider
 from ModestMaps.Core import Coordinate
 from shapely.geometry import box
 from flask import request, jsonify, abort
-from time import time
+from flask_cors import cross_origin
+
+OSM = Provider()
 
 def as_bbox(se, nw, srid=4326):
   wkt = box(nw.lon, se.lat, se.lon, nw.lat).wkt
   return 'SRID=%d;%s' % (srid, wkt)
 
 @app.route(API_PREFIX + '/communes/tiles/<int:z>/<int:x>/<int:y>.geojson', methods=[ 'GET' ])
+@cross_origin()
 def tile(x, y, z):
 
   # start = time()

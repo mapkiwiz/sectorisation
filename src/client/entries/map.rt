@@ -3,26 +3,32 @@
 <rt-import name="WorkerLayer" from="../app/layers/worker.datalayer" />
 <rt-import name="TaskLayer" from="../app/layers/task.datalayer" />
 <rt-import name="IsochroneLayer" from="../app/layers/isochrone.datalayer" />
+<rt-import name="CommuneLayer" from="../app/layers/commune.datalayer" />
 <rt-import name="default" as="stamen" from="../layers/stamen.json" />
 <rt-import name="List" from="../app/shared/components/list/list.component" />
 
 <div>
   <Map id="map" className="full-screen-map" view="{{ center: [46.1132, 6.4407], zoom: 9 }}">
     <TileLayer key="{ stamen.id }" rt-props="stamen" ></TileLayer>
+    <CommuneLayer key="communes-layer"
+                  id="communes"
+                  actionPrefix="GROUP_"
+                  layerType="Polygon"
+                  mapState="{ state => ({ items: state.groups.visible_items, selected: state.groups.selected }) }">
+    </CommuneLayer>
     <IsochroneLayer key="isochrone-layer"
                     id="isochrone">
     </IsochroneLayer>
     <TaskLayer key="tasks-layer"
                id="tasks"
                actionPrefix="TASK_"
-               mapState="{ state => ({ items: state.tasks.visible_items, selected: state.tasks.selected }) }">
+               mapState="{ state => ({ items: [], selected: state.tasks.selected }) }">
 
     </TaskLayer>
     <WorkerLayer key="workers-layer"
                  id="workers"
                  actionPrefix="WORKER_"
                  mapState="{ state => ({ items: state.workers.visible_items, selected: state.workers.selected }) }">
-
     </WorkerLayer>
   </Map>
   <div class="container-fluid"

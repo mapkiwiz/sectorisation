@@ -9,3 +9,19 @@
   width: 100%;
   height: 100%;
 }
+
+.commune-label {
+  color: darkblue;
+}
+
+.commune-label .badge {
+  background-color: darkblue;
+}
+
+.commune-label .details {
+  display: none;
+}
+
+.commune-label.high-zoom .details {
+  display: inline;
+}

@@ -82,4 +82,18 @@ export function runApp(App) {
     })
   });
 
+  fetch('data/communes.geojson').then(response => {
+    if (response.status >= 400) throw new Error('Bad response');
+    return response.json();
+  }).then(data => {
+    data.features.forEach(f => {
+      f.label = f.properties.NOM;
+      f.id = f.properties.CODE_INSEE;
+    });
+    store.dispatch({
+      type: 'GROUP_SET_ITEMS',
+      items: data.features
+    })
+  });
+
 }

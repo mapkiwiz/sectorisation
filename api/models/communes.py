@@ -12,7 +12,7 @@ class Commune(db.Model):
   id = db.Column(db.String)
   code_insee = db.Column(db.String(5))
   nom = db.Column(db.String)
-  geom = db.Column(Geometry('MULTIPOLYGON', srid=4326))
+  geom = db.Column('geom_lowres', Geometry('MULTIPOLYGON', srid=4326))
   centroid = db.Column(Geometry('POINT', srid=4326))
 
   @property

@@ -13,7 +13,7 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const ENV = argv['env'] || 'dev';
-var apps = [ 'list', 'map', 'upload' ];
+var apps = [ 'index', 'list', 'map', 'upload', 'vectiles', 'labels', 'panels' ];
 
 function loadApp(appName) {
   /*
@@ -49,7 +49,11 @@ module.exports = {
     vendor: './src/client/vendor',
     list: './src/client/entries/list',
     map: './src/client/entries/map',
-    upload: './src/client/entries/upload'
+    upload: './src/client/entries/upload',
+    vectiles: './src/client/entries/vectiles',
+    index: './src/client/entries/index',
+    labels: './src/client/entries/labels',
+    panels: './src/client/entries/panels',
   },
 
   output: {

@@ -10,11 +10,13 @@ export class DataLayer extends React.Component {
   static propTypes = {
     id: React.PropTypes.string.isRequired,
     actionPrefix: React.PropTypes.string,
-    mapState: React.PropTypes.func
+    mapState: React.PropTypes.func,
+    layerType: React.PropTypes.string
   };
 
   static defaultProps = {
     actionPrefix: '',
+    layerType: 'Point',
     mapState: state => ({
       items: state.visible_items,
       selected: state.selected
@@ -62,10 +64,13 @@ export class DataLayer extends React.Component {
       if (newState.items != this.state.items) {
         this.state = newState;
         this.updateLayer();
-      }
-      if (newState.selected != this.state.selected) {
+      } else if (newState.selected != this.state.selected) {
         this.state = newState;
-        this.updateSelection();
+        if (this.props.layerType == 'Point') {
+          this.updateSelection();
+        } else {
+          this.updateLayer();
+        }
       }
     });
   }
@@ -73,10 +78,12 @@ export class DataLayer extends React.Component {
   updateSelection() {
     Object.keys(this.__leaflet_component__._layers).forEach(key => {
       let marker = this.__leaflet_component__._layers[key];
-      if (this.state.selected.includes(marker.feature.id)) {
-        marker._icon.classList.add('feature-marker-selected');
-      } else {
-        marker._icon.classList.remove('feature-marker-selected');
+      if (marker._icon) {
+        if (this.state.selected.includes(marker.feature.id)) {
+          marker._icon.classList.add('feature-marker-selected');
+        } else {
+          marker._icon.classList.remove('feature-marker-selected');
+        }
       }
     });
   }

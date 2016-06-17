@@ -1,0 +1,21 @@
+<rt-import name="Map" from="../app/shared/components/leaflet/map.component" />
+<rt-import name="TileLayer" from="../app/shared/components/leaflet/tilelayer.component" />
+<rt-import name="LabelLayer" from="../app/layers/label.datalayer" />
+<rt-import name="WorkerLayer" from="../app/layers/worker.datalayer" />
+<rt-import name="default" as="stamen" from="../layers/stamen.json" />
+
+<div>
+  <Map id="map" className="full-screen-map" view="{{ center: [46.1132, 6.4407], zoom: 10 }}">
+    <TileLayer key="{ stamen.id }" rt-props="stamen" ></TileLayer>
+    <LabelLayer key="labels-layer"
+                id="labels"
+                actionPrefix="COMMUNE_"
+                mapState="{ state => ({ items: state.communes.visible_items, selected: state.communes.selected }) }" >
+    </LabelLayer>
+    <WorkerLayer key="workers-layer"
+                 id="workers"
+                 actionPrefix="WORKER_"
+                 mapState="{ state => ({ items: state.workers.visible_items, selected: state.workers.selected }) }">
+    </WorkerLayer>
+  </Map>
+</div>
