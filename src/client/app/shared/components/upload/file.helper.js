@@ -16,7 +16,7 @@ export function parseFile(file, data, callback) {
 
   if (file.name.match(/\.csv$/)) {
     console.log('Upload CSV');
-    parseAsObject(data, { comment: '#', delimiter: ',' }, callback);
+    parseAsObject(data, { comment: '#', delimiter: ';' }, callback);
   } else if (file.name.match(/\.tsv$/)) {
     console.log('Upload TSV');
     parseAsObject(data, { comment: '#', delimiter: '\t' }, callback);

@@ -1,0 +1,100 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
+import * as Redux from 'redux';
+import template from './upload.rt';
+import {parseFile} from '../../app/shared/components/upload/file.helper';
+import {geocoder} from '../../app/services/static.commune.geocoder.service';
+
+let initialState = {
+  items: [ { id: 1, label: 'toto' } ],
+  selected: [],
+  scrollIndex: undefined
+};
+
+let reducer = (state = initialState, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
+
+let App = React.createClass({
+
+  mixins: [ React.LinkedStateMixin ],
+
+  contextTypes: {
+    store: React.PropTypes.object
+  },
+
+  getInitialState: function() {
+    return {
+      items: this.mapContextToState(),
+      file: undefined,
+      headers: undefined,
+      data: undefined
+    };
+  },
+
+  mapContextToState: function() {
+    return this.context.store.getState().items;
+  },
+
+  onDrop: function(file, data) {
+    parseFile(file, data, o => {
+      if (_.isArray(o)) {
+        let headers = _.keys(_.first(o));
+        this.setState({
+          items: this.mapContextToState(),
+          file: file,
+          data: o,
+          headers: headers
+        });
+      } else if (_.isObject(o)) {
+        if (o.type && o.type == 'FeatureCollection') {
+          console.log('GeoJSON');
+        } else {
+          console.log('JSON');
+        }
+      }
+    });
+  },
+
+  accept: function(params) {
+
+    console.log("CODE COMMUNE -> " + params.communeField);
+    let communes = {};
+
+    _.each(this.state.data, item => {
+      let code = item[params.communeField];
+      if (!communes.hasOwnProperty(code)) {
+        let commune = geocoder(code);
+        communes[code] = commune || null;
+      }
+    });
+
+    console.log("Count of Items : " + this.state.data.length);
+    console.log("Count of Communes : " + _.keys(communes).length);
+    console.log("Count of Resolved Communes : " + _.keys(_.pickBy(communes, (key, value) => (value !== undefined))).length);
+
+  },
+
+  render: function() {
+    return template.call(this);
+  }
+
+});
+
+(function() {
+
+  let store = Redux.createStore(reducer);
+
+
+  ReactDOM.render(
+    <Provider store={ store }>
+      <App></App>
+    </Provider>,
+    document.getElementById('main')
+  );
+
+})();

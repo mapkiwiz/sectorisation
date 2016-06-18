@@ -18,6 +18,10 @@
   background-color: darkblue;
 }
 
+.commune-label.feature-marker-selected .badge {
+  background-color: gold;
+}
+
 .commune-label .details {
   display: none;
 }

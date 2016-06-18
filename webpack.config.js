@@ -49,7 +49,7 @@ module.exports = {
     vendor: './src/client/vendor',
     list: './src/client/entries/list',
     map: './src/client/entries/map',
-    upload: './src/client/entries/upload',
+    upload: './src/client/entries/upload/upload.js',
     vectiles: './src/client/entries/vectiles',
     index: './src/client/entries/index',
     labels: './src/client/entries/labels',

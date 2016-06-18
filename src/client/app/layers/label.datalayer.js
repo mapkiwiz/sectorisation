@@ -36,6 +36,23 @@ export class LabelLayer extends  DataLayer {
         //   className: 'commune-label'
         // });
 
+        marker.on('click', () => {
+          // popover.setContent('<p>' + feature.label + '</p>');
+          // popover.setLatLng(marker.getLatLng());
+          // if (!popover._map) popovers.addLayer(popover);
+
+          this.context.store.dispatch({
+            type: this.actionPrefix + 'SELECT',
+            id: feature.id
+          });
+
+          this.context.store.dispatch({
+            type: this.actionPrefix + 'SCROLL_TO',
+            index: feature.id
+          });
+
+        });
+
       }
 
     };
