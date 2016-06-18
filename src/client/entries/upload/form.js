@@ -4,7 +4,7 @@ import template from './form.rt';
 import _ from 'lodash';
 
 function guessField(availableFields, pattern) {
-  return _.find(availableFields, (item) => item.match(pattern));
+  return _.find(availableFields, (item) => pattern.test(item));
 };
 
 let UploadForm = React.createClass({
@@ -26,7 +26,10 @@ let UploadForm = React.createClass({
     return {
       idField: guessField(this.props.headers, /(id)|(us)|(enqtr)/i),
       labelField: guessField(this.props.headers, /(label)|(nom)/i),
-      communeField: guessField(this.props.headers, /(insee)|(code)/i),
+      typeCodeCommune: 'insee',
+      communeInseeField: guessField(this.props.headers, /(insee)|(code)/i),
+      postcodeField: guessField(this.props.headers, /(post)/i),
+      communeNameField: guessField(this.props.headers, /(com)|(nom)/i),
       hasLocation: false,
       crs: 4326,
       xField: guessField(this.props.headers, /(x)|(lon)/i),

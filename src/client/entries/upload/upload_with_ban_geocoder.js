@@ -4,7 +4,8 @@ import {Provider} from 'react-redux';
 import * as Redux from 'redux';
 import template from './upload.rt';
 import {parseFile} from '../../app/shared/components/upload/file.helper';
-import {geocoder} from '../../app/services/static.postcode.geocoder.service';
+import {geocoder} from '../../app/services/ban.postcode.geocoder';
+import Promise from 'bluebird';
 
 let initialState = {
   items: [ { id: 1, label: 'toto' } ],
@@ -58,51 +59,57 @@ let App = React.createClass({
 
   accept: function(params) {
 
+    console.log("CODE COMMUNE -> " + params.communeNameField);
     console.log("CODE POSTAL -> " + params.postcodeField);
-    let postcodes = {};
+
+    let communes = {};
     let counts = {};
+    let requests = [];
 
     _.each(this.state.data, item => {
       let code = item[params.postcodeField];
-      if (code) {
-        if (!postcodes.hasOwnProperty(code)) {
-          let commune = geocoder(code);
-          postcodes[code] = commune || null;
-        }
-        if (!counts.hasOwnProperty(code)) {
-          counts[code] = 1;
+      let city = item[params.communeNameField];
+      if (code && city) {
+        let key = code + ':' + city;
+        if (!counts.hasOwnProperty(key)) {
+          requests.push(geocoder(key, code, city).then(result => {
+              if (result) {
+                console.log(result);
+                communes[result.key] = result.value;
+              }
+            })
+          );
+          counts[key] = 1;
         } else {
-          counts[code] += 1;
+          counts[key] = counts[key] + 1;
         }
-      }
-    });
-
-    _.mapValues(postcodes, (value, key) => {
-      if (value) {
-        value.properties.count = counts[key];
-        return value;
       }
     });
 
     console.log("Count of Items : " + this.state.data.length);
-    console.log("Count of Postcodes : " + _.keys(counts).length);
-    console.log("Count of Resolved Postcodes : " +
-      _.chain(postcodes)
-        .pickBy((value, key) => (value != null))
-        .keys()
-        .value().length);
-    console.log(_.chain(postcodes)
-      .pickBy(value => value == null)
-      .keys()
-      .value());
+    console.log("Count of Communes : " + _.keys(counts).length);
 
-    this.setState({
-      ...this.state,
-      items: _.chain(postcodes).pickBy((value, key) => (value != null)).values().map(
-        o => ({ id: o.id, label: o.id + ' ' + o.properties.COMMUNE + ' (' + o.properties.count + ')' })
-      ).sortBy(
-        o => o.id
-      ).value()
+    Promise.all(requests).then(() => {
+
+      _.mapValues(communes, (value, key) => {
+        if (value) {
+          value.properties.count = counts[key];
+          return value;
+        }
+      });
+
+      console.log("Count of Resolved Communes : " +
+        _.chain(communes).pickBy((value, key) => (value != null)).keys().value().length);
+
+      this.setState({
+        ...this.state,
+        items: _.chain(communes).pickBy((value, key) => (value != null)).values().map(
+          o => ({ id: o.properties.citycode, label: o.properties.citycode + ' ' + o.properties.label + ' (' + o.properties.count + ')' })
+        ).sortBy(
+          o => o.id
+        ).value()
+      });
+
     });
 
   },

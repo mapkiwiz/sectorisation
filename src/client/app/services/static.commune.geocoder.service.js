@@ -12,7 +12,8 @@ fetch('data/communes_fla_p.geojson').then(response => {
   return response.json();
 }).then(data => {
   _.each(data.features, ref => {
-    geocoder.refs[ref.properties.INSEE_COM] = ref;
+    ref.id = ref.properties.INSEE_COM;
+    geocoder.refs[ref.id] = ref;
   });
 }).then(() => {
   console.log('Geocoder data has loaded');

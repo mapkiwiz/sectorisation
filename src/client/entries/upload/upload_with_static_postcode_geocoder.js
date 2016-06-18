@@ -29,11 +29,15 @@ let App = React.createClass({
 
   getInitialState: function() {
     return {
-      items: [],
+      items: this.mapContextToState(),
       file: undefined,
       headers: undefined,
       data: undefined
     };
+  },
+
+  mapContextToState: function() {
+    return this.context.store.getState().items;
   },
 
   onDrop: function(file, data) {
@@ -41,7 +45,7 @@ let App = React.createClass({
       if (_.isArray(o)) {
         let headers = _.keys(_.first(o));
         this.setState({
-          items: [],
+          items: this.mapContextToState(),
           file: file,
           data: o,
           headers: headers
@@ -87,14 +91,7 @@ let App = React.createClass({
     console.log("Count of Items : " + this.state.data.length);
     console.log("Count of Postcodes : " + _.keys(counts).length);
     console.log("Count of Resolved Postcodes : " +
-      _.chain(postcodes)
-        .pickBy((value, key) => (value != null))
-        .keys()
-        .value().length);
-    console.log(_.chain(postcodes)
-      .pickBy(value => value == null)
-      .keys()
-      .value());
+      _.chain(postcodes).pickBy((value, key) => (value != null)).keys().value().length);
 
     this.setState({
       ...this.state,
