@@ -10,10 +10,13 @@ export function MenuPanel(props, context) {
       <hr/>
       <MessagePanel></MessagePanel>
       <ul className="list">
-        <li><Link to="/import/workers">Importer des enquêteurs</Link></li>
-        <li><Link to="/import/tasks">Importer des unités statistiques</Link></li>
+        <li><Link to="/project">Projet</Link></li>
+        <li><Link to="/workers">Enquêteurs</Link></li>
+        <li><Link to="/tasks">Unités statistiques</Link></li>
+        <li><Link to="/import">Importer des données</Link></li>
+        <li><Link to="/baselayers">Fonds de plan</Link></li>
       </ul>
     </div>
   );
-  
+
 }

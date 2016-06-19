@@ -163,7 +163,7 @@ export class WorkersImportPanel extends React.Component {
       <div className="col-md-6 col-md-offset-6 panel-container">
         <h3>
           Importer des enquêteurs
-          <MenuLink></MenuLink>
+          <MenuLink to="/import" />
         </h3>
         <hr/>
         { content }

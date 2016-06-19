@@ -1,8 +1,8 @@
 .list-container {
   overflow-x: hidden;
   overflow-y: scroll;
-  max-height: 480px;
-  margin-top: 25px;
+  max-height: 450px;
+  margin-top: 20px;
 }
 
 .list-header {

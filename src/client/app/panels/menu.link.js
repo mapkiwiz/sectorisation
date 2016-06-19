@@ -3,8 +3,10 @@ import {Link} from 'react-router';
 
 export function MenuLink(props, context) {
 
+  let linkTo = props.to || '/';
+
   return (
-    <Link to="/" className="pull-right">
+    <Link to={ linkTo } className="pull-right">
       <span className="glyphicon glyphicon-menu-hamburger"></span>
     </Link>
   );

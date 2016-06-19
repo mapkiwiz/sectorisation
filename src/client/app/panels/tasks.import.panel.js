@@ -199,7 +199,7 @@ export class TasksImportPanel extends React.Component {
       <div className="col-md-6 col-md-offset-6 panel-container">
         <h3>
           Importer des unités statistiques
-          <MenuLink></MenuLink>
+          <MenuLink to="/import" />
         </h3>
         <hr/>
         { content }

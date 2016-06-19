@@ -10,7 +10,13 @@ interface ListProps<T> {
   scrollDelta: number;
 }
 
-export class List<T> extends React.Component<ListProps<T>, {}> {
+interface ListState {
+  items: Array,
+  selected: Array,
+  scrollIndex: number
+}
+
+export class List<T> extends React.Component<ListProps<T>, ListState> {
 
   static defaultProps = {
     items: [],
@@ -34,6 +40,7 @@ export class List<T> extends React.Component<ListProps<T>, {}> {
 
   constructor(props: ListProps<T>, context: any) {
     super(props, context);
+    this.state = this.mapContextToState();
   }
 
   getChildContext() {
@@ -43,7 +50,7 @@ export class List<T> extends React.Component<ListProps<T>, {}> {
     };
   }
 
-  mapContextToState() {
+  mapContextToState(): ListState {
     return this.props.mapState(this.context.store.getState());
   }
 
@@ -80,9 +87,13 @@ export class List<T> extends React.Component<ListProps<T>, {}> {
   componentDidMount() {
     this.dispose =
       this.context.store.subscribe(() => {
-        let to = this.props.mapState(this.context.store.getState()).scrollIndex;
-        if (to)
-          this.scrollTo(to);
+        let state = this.mapContextToState();
+        if (this.state.items != state.items) {
+          this.setState(state);
+        }
+        if (state.scrollIndex && state.scrollIndex != this.state.scrollIndex)
+          this.state.scrollIndex = state.scrollIndex;
+          this.scrollTo(state.scrollIndex);
       });
     // this.dockHeader();
   }
@@ -110,7 +121,7 @@ export class List<T> extends React.Component<ListProps<T>, {}> {
   }
 
   render() {
-    let items = this.props.items.map(item => {
+    let items = this.state.items.map(item => {
       return (
         <ListItem key={ item.id }
                   id={ item.id }
