@@ -1,0 +1,45 @@
+.feature-marker {
+  font-size: 30px;
+  color: #337ab7;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+}
+
+.feature-marker-for-validation {
+  color: silver;
+}
+
+.feature-marker-valid {
+  color: limegreen;
+}
+
+.feature-marker-deleted {
+  color: firebrick;
+}
+
+.feature-marker-created {
+  color: #006600;
+}
+
+.feature-marker-modified {
+  color: #CF0;
+}
+
+.feature-marker-selected {
+  color: gold;
+}
+
+.task-marker {
+  font-size: 20px;
+  color: darkgrey;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+}
+
+

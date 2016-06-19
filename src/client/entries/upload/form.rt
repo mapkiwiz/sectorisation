@@ -1,0 +1,117 @@
+<rt-import name="SwitchInput" from="../../app/shared/components/input/switch.component" />
+
+<form class="form-horizontal" onSubmit="{ e => this.submit(e) }">
+  <hr/>
+  <div class="form-group">
+    <label for="idField" class="col-sm-6 control-label">Clé</label>
+    <div class="col-sm-6">
+      <select name="idField" valueLink="{ this.linkState('idField') }">
+        <rt-virtual rt-repeat="header in this.props.headers">
+          <option value="{header}">{ header }</option>
+        </rt-virtual>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="labelField" class="col-sm-6 control-label">Étiquette</label>
+    <div class="col-sm-6">
+      <select name="labelField" valueLink="{ this.linkState('labelField') }">
+        <rt-virtual rt-repeat="header in this.props.headers">
+          <option value="{header}">{ header }</option>
+        </rt-virtual>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="typeCodeCommune" class="col-sm-6 control-label">Localisation par</label>
+    <div class="col-sm-6">
+      <select name="typeCodeCommune" valueLink="{ this.linkState('typeCodeCommune') }">
+        <option value="insee">Code Commune (INSEE)</option>
+        <option value="postcode">Code postal</option>
+      </select>
+    </div>
+  </div>
+  <rt-virtual rt-if="this.state.typeCodeCommune == 'insee'">
+    <div class="form-group">
+      <label for="communeInseeField" class="col-sm-6 control-label">Code Commune</label>
+      <div class="col-sm-6">
+        <select name="communeInseeField" valueLink="{ this.linkState('communeInseeField') }">
+          <rt-virtual rt-repeat="header in this.props.headers">
+            <option value="{header}">{ header }</option>
+          </rt-virtual>
+        </select>
+      </div>
+    </div>
+  </rt-virtual>
+  <rt-virtual rt-if="this.state.typeCodeCommune == 'postcode'">
+    <div class="form-group">
+      <label for="postcodeField" class="col-sm-6 control-label">Code postal</label>
+      <div class="col-sm-6">
+        <select name="postcodeField" valueLink="{ this.linkState('postcodeField') }">
+          <rt-virtual rt-repeat="header in this.props.headers">
+            <option value="{header}">{ header }</option>
+          </rt-virtual>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="communeNameField" class="col-sm-6 control-label">Commune</label>
+      <div class="col-sm-6">
+        <select name="communeNameField" valueLink="{ this.linkState('communeNameField') }">
+          <rt-virtual rt-repeat="header in this.props.headers">
+            <option value="{header}">{ header }</option>
+          </rt-virtual>
+        </select>
+      </div>
+    </div>
+  </rt-virtual>
+  <div class="form-group">
+    <label for="hasLocation" class="col-sm-6 control-label">Géoréférencement ?</label>
+    <div class="col-sm-6">
+      <SwitchInput name="hasLocation"
+                   value="{ this.linkState('hasLocation').value }"
+                   onChange="{ e => this.linkState('hasLocation').requestChange(e.target.value) }"
+                   labelOn="OUI"
+                   labelOff="NON">
+      </SwitchInput>
+    </div>
+  </div>
+  <rt-virtual rt-if="this.state.hasLocation">
+    <div class="form-group">
+      <label for="crs" class="col-sm-6 control-label">SRS</label>
+      <div class="col-sm-6">
+        <select name="crs" valueLink="{ this.linkState('crs') }">
+          <rt-virtual rt-repeat="crs in this.supportedCRS">
+            <option value="{crs.code}">{ crs.label }</option>
+          </rt-virtual>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="xField" class="col-sm-6 control-label">X ou Longitude</label>
+      <div class="col-sm-6">
+        <select name="xField" valueLink="{ this.linkState('xField') }">
+          <rt-virtual rt-repeat="header in this.props.headers">
+            <option value="{header}">{ header }</option>
+          </rt-virtual>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="yField" class="col-sm-6 control-label">Y ou Latitude</label>
+      <div class="col-sm-6">
+        <select name=yField" valueLink="{ this.linkState('yField') }">
+          <rt-virtual rt-repeat="header in this.props.headers">
+            <option value="{header}">{ header }</option>
+          </rt-virtual>
+        </select>
+      </div>
+    </div>
+  </rt-virtual>
+  <hr/>
+  <div class="form-group">
+    <div class="col-md-6 col-md-offset-6">
+      <button type="submit" class="btn btn-primary">Importer</button>
+    </div>
+  </div>
+</form>

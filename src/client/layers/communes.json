@@ -1,0 +1,8 @@
+{
+  "id": "communes-vectiles",
+  "url":"//localhost:5000/api/v1/communes/tiles/{z}/{x}/{y}.geojson",
+  "title": "Communes françaises",
+  "attribution": "BD TOPO &copy; <a href=\"www.ign.fr\">IGN</a>",
+  "weight": 2,
+  "color": "#f00"
+}

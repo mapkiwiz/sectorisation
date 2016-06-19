@@ -1,0 +1,84 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "label": "Albert Allemand"
+    },
+    {
+      "id": 2,
+      "label": "Bernard Brosse"
+    },
+    {
+      "id": 3,
+      "label": "Charlie Chan"
+    },
+    {
+      "id": 4,
+      "label": "David Dupont"
+    },
+    {
+      "id": 5,
+      "label": "David Dupont"
+    },
+    {
+      "id": 6,
+      "label": "David Dupont"
+    },
+    {
+      "id": 7,
+      "label": "David Dupont"
+    },
+    {
+      "id": 8,
+      "label": "David Dupont"
+    },
+    {
+      "id": 9,
+      "label": "David Dupont"
+    },
+    {
+      "id": 10,
+      "label": "Eloise Eckert"
+    },
+    {
+      "id": 11,
+      "label": "Frédéric François"
+    },
+    {
+      "id": 12,
+      "label": "Georges Gros"
+    },
+    {
+      "id": 13,
+      "label": "Henri Hart"
+    },
+    {
+      "id": 14,
+      "label": "Isabelle Imbert"
+    },
+    {
+      "id": 15,
+      "label": "Julien J."
+    },
+    {
+      "id": 16,
+      "label": "Karin Kellerman"
+    },
+    {
+      "id": 17,
+      "label": "Luc Laville"
+    },
+    {
+      "id": 18,
+      "label": "Maurice Michaud"
+    },
+    {
+      "id": 19,
+      "label": "Nathalie Noel"
+    },
+    {
+      "id": 20,
+      "label": "Ophélie Ort"
+    }
+  ]
+}
