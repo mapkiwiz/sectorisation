@@ -15,6 +15,23 @@ body, html {
   width: 100%
 }
 
+.root-panel {
+  position: absolute;
+  z-index: 900;
+  top: 10px;
+  left: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.panel-container {
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 15px;
+  pointer-events: all;
+  box-shadow: 4px 4px 5px #aaa;
+}
+
 .carousel, .nav, .pagination, .panel-title a {
   cursor: pointer
 }

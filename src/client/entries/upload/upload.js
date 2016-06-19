@@ -37,6 +37,12 @@ let App = React.createClass({
   },
 
   onDrop: function(file, data) {
+    this.setState({
+      items: [],
+      file: undefined,
+      headers: undefined,
+      data: undefined
+    });
     parseFile(file, data, o => {
       if (_.isArray(o)) {
         let headers = _.keys(_.first(o));

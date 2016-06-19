@@ -1,0 +1,43 @@
+import React from 'react';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import {MapContainer} from './map';
+import {MenuPanel} from './panels/menu.panel';
+import {WorkersListPanel} from './panels/workers.list.panel';
+import {TaskGroupsListPanel} from './panels/taskgroups.list.panel';
+import {TasksListPanel} from './panels/tasks.list.panel';
+import {TasksImportPanel} from './panels/tasks.import.panel';
+import {WorkersImportPanel} from './panels/workers.import.panel';
+
+function RootPanel(props, context) {
+  return (
+    <div className="container-fluid root-panel">
+      <div className="row" style={{ width: '100%' }}>
+        <div className="col-md-4 col-md-offset-8 panel-container">
+          { props.children }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export class App extends React.Component {
+
+  render() {
+    return (
+      <div>
+        <MapContainer></MapContainer>
+        <Router history={ browserHistory } >
+          <Route path="/" component={ RootPanel }>
+            <IndexRoute component={ MenuPanel } />
+            <Route path="/import/workers" component={ WorkersImportPanel } />
+            <Route path="/import/tasks" component={ TasksImportPanel } />
+            <Route path="/workers" component={ WorkersListPanel } />
+            <Route path="/communes" component={ TaskGroupsListPanel } />
+            <Route path="/tasks" component={ TasksListPanel } />
+          </Route>
+        </Router>
+      </div>
+    );
+  }
+
+}
