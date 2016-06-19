@@ -2,7 +2,7 @@ import Leaflet from 'leaflet';
 import {DataLayer} from '../shared/components/leaflet/datalayer.component';
 import '../shared/components/leaflet/label';
 
-export class LabelLayer extends  DataLayer {
+export class TaskGroupLayer extends  DataLayer {
 
   get layerOptions() {
     return {
@@ -11,7 +11,8 @@ export class LabelLayer extends  DataLayer {
 
         var icon = Leaflet.divIcon({
           className: 'commune-label',
-          html: '<span class="badge">18</span><span class="details">' + feature.label + '</span>'
+          html: '<span class="badge">' + (feature.weight || 0) +
+          '</span><span class="details">' + feature.label + '</span>'
         });
 
         return Leaflet.marker(latLng, {icon: icon});

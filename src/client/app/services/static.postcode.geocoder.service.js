@@ -11,7 +11,9 @@ PostcodeGeocoder.ready = false;
 function rowToGeoJSON(header, row) {
   let properties = _.zipObject(header, row);
   return {
+    type: 'Feature',
     id: properties.CODE_POSTAL,
+    label: properties.COMMUNE,
     geometry: { type: 'Point', coordinates: [ properties.LONGITUDE, properties.LATITUDE ] },
     properties: _.omit(properties, [ 'LONGITUDE', 'LATITUDE' ])
   };
@@ -28,7 +30,7 @@ export function PostcodeGeocoderFactory(callback) {
     if (response.status >= 400) throw new Error('Bad response');
     return response.text();
   }).then(data => {
-    
+
     // Parse data as CSV with delimiter SEMICOLON
     parse(data, {delimiter: ';'}, (err, rows) => {
       // Skip header line

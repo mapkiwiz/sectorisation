@@ -1,9 +1,9 @@
 import React from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import {guessField} from './utils';
-import template from './workers.import.form.rt';
+import template from './csv.import.form.rt';
 
-let WorkersImportForm = React.createClass({
+let TasksImportForm = React.createClass({
 
   mixins: [ LinkedStateMixin ],
 
@@ -44,4 +44,4 @@ let WorkersImportForm = React.createClass({
 
 });
 
-export {WorkersImportForm};
+export {TasksImportForm};
