@@ -12,15 +12,27 @@ function RootPanel(props, context) {
   return (
     <div className="container-fluid root-panel">
       <div className="row" style={{ width: '100%' }}>
-        <div className="col-md-4 col-md-offset-8 panel-container">
           { props.children }
-        </div>
       </div>
     </div>
   );
 }
 
 export class App extends React.Component {
+
+  static propTypes = {
+    messenger: React.PropTypes.object
+  };
+
+  static childContextTypes = {
+    messenger: React.PropTypes.object
+  };
+
+  getChildContext() {
+    return {
+      messenger: this.props.messenger
+    };
+  }
 
   render() {
     return (

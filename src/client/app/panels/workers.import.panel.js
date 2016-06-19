@@ -3,15 +3,24 @@ import {MenuLink} from './menu.link';
 import {WorkersImportForm} from '../forms/workers.import.form';
 import {parseFile} from '../shared/components/upload/file.helper';
 import {DropZone} from '../shared/components/upload/dropzone.component';
+import {BatchCommuneGeocoder} from '../services/static.commune.geocoder.service';
+import _ from 'lodash';
 
 export class WorkersImportPanel extends React.Component {
+
+  static contextTypes = {
+    store: React.PropTypes.object,
+    router: React.PropTypes.object,
+    messenger: React.PropTypes.object
+  };
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       file: undefined,
       headers: undefined,
-      data: undefined
+      data: undefined,
+      processing: false
     };
   }
 
@@ -20,7 +29,8 @@ export class WorkersImportPanel extends React.Component {
     this.setState({
       file: undefined,
       headers: undefined,
-      data: undefined
+      data: undefined,
+      processing: false
     });
 
     parseFile(file, data, o => {
@@ -29,28 +39,93 @@ export class WorkersImportPanel extends React.Component {
         this.setState({
           file: file,
           data: o,
-          headers: headers
+          headers: headers,
+          processing: false
         });
       }
     });
 
   }
 
+  itemToGeoJSON(id, label, geometry, properties) {
+    return {
+      type: 'Feature',
+      id: id,
+      label: label,
+      properties: properties,
+      geometry: geometry
+    }
+  }
+
   accept(params) {
-    console.log(params);
+    // geocode file/data
+    // option 1. CODE INSEE -> COMMUNE CENTROID
+    // option 2. CODE INSEE + COMMUNE -> BAN LOCATION
+    // option 3. CODE POSTAL -> POSTOFFICE CENTROID
+    // option 4. CODE POSTAL + COMMUNE -> BAN LOCATION
+    // option 5. XY -> COMMUNE -> COMMUNE CENTROID
+    switch (params.typeCodeCommune) {
+      case 'insee':
+
+        this.setState({
+          ...this.state,
+          processing: true
+        });
+
+        BatchCommuneGeocoder(this.state.file, this.state.data, params.communeInseeField, geocodedItems => {
+
+          let items = geocodedItems.filter(item => item.location != undefined).map(
+            item => {
+              let id = item[params.idField];
+              let label = item[params.labelField];
+              let properties = _.omit(item, [ params.idField, params.labelField, 'location' ]);
+              return this.itemToGeoJSON(id, label, item.location.geometry, properties);
+          });
+
+          this.context.store.dispatch({
+            type: 'WORKER_SET_ITEMS',
+            items: items
+          });
+
+          this.context.messenger.setMessage(
+            items.length +  ' enquêteurs ont été importés', 'success');
+
+          this.context.router.push('/');
+
+        });
+        return;
+
+      case 'postcode':
+        this.context.messenger.setMessage('Géocodage par code postal indisponible', 'warning');
+        this.context.router.push('/');
+        return;
+
+      default:
+        return;
+
+    } // end switch
+
   }
 
   render() {
 
     let content;
-    if (this.state.file) {
+    if (this.state.processing) {
       content = (
-        <div className="form-horizontal">
-          <WorkersImportForm file={ this.state.file }
-                             headers={ this.state.headers }
-                             onSubmit={ (params) => this.accept(params) }>
-          </WorkersImportForm>
+        <div>
+          <span  className="help-block">Importation en cours ...</span>
+          <div className="progress">
+            <div className="progress-bar progress-bar-success progress-bar-striped"
+                 style={{ 'width': '100%' }}></div>
+          </div>
         </div>
+      );
+    } else if (this.state.file) {
+      content = (
+        <WorkersImportForm file={ this.state.file }
+                           headers={ this.state.headers }
+                           onSubmit={ (params) => this.accept(params) }>
+        </WorkersImportForm>
       );
     } else {
       content = (
@@ -67,7 +142,7 @@ export class WorkersImportPanel extends React.Component {
     }
 
     return (
-      <div>
+      <div className="col-md-6 col-md-offset-6 panel-container">
         <h3>
           Importer des enquêteurs
           <MenuLink></MenuLink>

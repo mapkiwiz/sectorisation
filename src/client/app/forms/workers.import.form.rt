@@ -1,6 +1,12 @@
 <rt-import name="SwitchInput" from="../shared/components/input/switch.component" />
 
 <form class="form-horizontal" onSubmit="{ e => this.submit(e) }">
+  <div class="col-sm-12">
+    <div class="alert alert-info">
+      Importation du fichier
+      <b>{ this.props.file.name }</b>
+    </div>
+  </div>
   <div class="form-group">
     <label for="idField" class="col-sm-4 control-label">Clé</label>
     <div class="col-sm-8">

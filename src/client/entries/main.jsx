@@ -65,7 +65,7 @@ export function runApp(App) {
     store.dispatch({
       type: 'WORKER_SET_ITEMS',
       items: data.features
-    })
+    });
   });
 
   fetch('data/us.geojson').then(response => {
