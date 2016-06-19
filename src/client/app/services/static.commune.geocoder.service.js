@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 
-export function CommuneGeocoder(code) {
+function CommuneGeocoder(code) {
   return CommuneGeocoder.refs[code];
 };
 
@@ -24,7 +24,7 @@ export function CommuneGeocoderFactory(callback) {
       CommuneGeocoder.refs[ref.id] = ref;
     });
   }).then(() => {
-    console.log('Geocoder data has loaded');
+    console.log('CommuneGeocoder data has loaded');
     CommuneGeocoder.ready = true;
   }).then(() => {
     callback(CommuneGeocoder);

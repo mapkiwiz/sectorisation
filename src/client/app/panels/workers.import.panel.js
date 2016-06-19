@@ -4,6 +4,7 @@ import {WorkersImportForm} from '../forms/workers.import.form';
 import {parseFile} from '../shared/components/upload/file.helper';
 import {DropZone} from '../shared/components/upload/dropzone.component';
 import {BatchCommuneGeocoder} from '../services/static.commune.geocoder.service';
+import {BatchPostcodeGeocoder} from '../services/static.postcode.geocoder.service';
 import _ from 'lodash';
 
 export class WorkersImportPanel extends React.Component {
@@ -72,38 +73,55 @@ export class WorkersImportPanel extends React.Component {
           processing: true
         });
 
-        BatchCommuneGeocoder(this.state.file, this.state.data, params.communeInseeField, geocodedItems => {
-
-          let items = geocodedItems.filter(item => item.location != undefined).map(
-            item => {
-              let id = item[params.idField];
-              let label = item[params.labelField];
-              let properties = _.omit(item, [ params.idField, params.labelField, 'location' ]);
-              return this.itemToGeoJSON(id, label, item.location.geometry, properties);
+        BatchCommuneGeocoder(this.state.file, this.state.data, params.communeInseeField,
+          geocodedItems => {
+            this.storeItems(geocodedItems, params);
           });
 
-          this.context.store.dispatch({
-            type: 'WORKER_SET_ITEMS',
-            items: items
-          });
-
-          this.context.messenger.setMessage(
-            items.length +  ' enquêteurs ont été importés', 'success');
-
-          this.context.router.push('/');
-
-        });
         return;
 
       case 'postcode':
-        this.context.messenger.setMessage('Géocodage par code postal indisponible', 'warning');
-        this.context.router.push('/');
+
+        this.setState({
+          ...this.state,
+          processing: true
+        });
+
+        BatchPostcodeGeocoder(this.state.file, this.state.data, params.postcodeField,
+          geocodedItems => {
+            this.storeItems(geocodedItems, params);
+          });
+
         return;
 
       default:
+        this.context.messenger.setMessage('Géocodage par autre code indisponible', 'warning');
+        this.context.router.push('/');
         return;
 
     } // end switch
+
+  }
+
+  storeItems(geocodedItems, params) {
+
+    let items = geocodedItems.filter(item => item.location != undefined).map(
+      item => {
+        let id = item[params.idField];
+        let label = item[params.labelField];
+        let properties = _.omit(item, [ params.idField, params.labelField, 'location' ]);
+        return this.itemToGeoJSON(id, label, item.location.geometry, properties);
+      });
+
+    this.context.store.dispatch({
+      type: 'WORKER_SET_ITEMS',
+      items: items
+    });
+
+    this.context.messenger.setMessage(
+      items.length +  ' enquêteurs ont été importés', 'success');
+
+    this.context.router.push('/');
 
   }
 
