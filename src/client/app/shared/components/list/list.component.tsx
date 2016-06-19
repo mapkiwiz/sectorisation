@@ -60,7 +60,7 @@ export class List<T> extends React.Component<ListProps<T>, ListState> {
 
   scrollTo(id: number) {
     let toElement: any = undefined;
-    this.props.items.forEach((item, idx) => {
+    this.state.items.forEach((item, idx) => {
       if (item.id == id) {
         toElement = this.container.children[idx];
       }

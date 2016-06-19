@@ -56,3 +56,7 @@ ul.list span.action {
 ul.list .selected span.action {
   display: inline-block
 }
+
+ul.list .selected a {
+  color: white;
+}
