@@ -11,10 +11,11 @@ function mapStateToWorkers(state) {
     scrollIndex: state.workers.scrollIndex };
 }
 
-function renderWorkerItem(item) {
+function renderWorkerItem(item, context) {
+  let assignments = context.store.getState().assignments.workers[item.id] || 0;
   return (
     <div>
-      <span className="badge">{ item.tasks || 0 }</span>
+      <span className="badge">{ assignments }</span>
       <span style={{ marginLeft: '10px', verticalAlign: 'middle' }}>{ item.label }</span>
       <div className="pull-right">
         <Link to="/worker/details">
@@ -63,7 +64,7 @@ export function WorkersListPanel(props, context) {
       <hr/>
       <SearchBox search={ term => filterByLabel(term, context) } />
       <List items={ workers.visible_items }
-            renderItem={ renderWorkerItem }
+            renderItem={ item => renderWorkerItem(item, context) }
             actionPrefix="WORKER_"
             mapState={ mapStateToWorkers }>
       </List>

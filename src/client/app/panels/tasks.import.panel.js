@@ -113,7 +113,7 @@ export class TasksImportPanel extends React.Component {
 
   }
 
-  groupByLocation(geocodedItems) {
+  groupByLocation(geocodedItems, idProperty) {
 
     return _.chain(geocodedItems).filter(
         item => item.location !== undefined
@@ -121,9 +121,11 @@ export class TasksImportPanel extends React.Component {
       let location = item.location;
       if (!hash.hasOwnProperty(location.id)) {
         location.weight = 1;
+        location.tasks = [ item[idProperty] ]
         hash[location.id] = location;
       } else {
         location.weight += 1;
+        location.tasks.push(item[idProperty]);
       }
       return hash;
     }, {}).values().value();
@@ -140,7 +142,7 @@ export class TasksImportPanel extends React.Component {
 
   storeItems(geocodedItems, params) {
 
-    let groups = this.groupByLocation(geocodedItems);
+    let groups = this.groupByLocation(geocodedItems, params.idField);
     console.log(groups);
     let items = this.itemsToGeoJSON(geocodedItems, params);
 
