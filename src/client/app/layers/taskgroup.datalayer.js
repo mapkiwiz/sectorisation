@@ -1,8 +1,28 @@
 import Leaflet from 'leaflet';
 import {DataLayer} from '../shared/components/leaflet/datalayer.component';
 import '../shared/components/leaflet/label';
+import {Popover} from '../../lib/Leaflet.popover/index';
+import _ from 'lodash';
 
 export class TaskGroupLayer extends  DataLayer {
+
+  popovers;
+  popover;
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.popovers = Leaflet.layerGroup();
+    this.popover = new Popover({
+      direction: 'right',
+      closeable: true,
+      offset: {
+        left: 8,
+        right: 15,
+        top: 5,
+        bottom: 0 }
+    });
+    this.context.registry.addLayer('popovers', this.popovers);
+  }
 
   get layerOptions() {
     return {
@@ -38,20 +58,26 @@ export class TaskGroupLayer extends  DataLayer {
         // });
 
         marker.on('click', () => {
-          // popover.setContent('<p>' + feature.label + '</p>');
-          // popover.setLatLng(marker.getLatLng());
-          // if (!popover._map) popovers.addLayer(popover);
 
           this.context.store.dispatch({
-            type: this.actionPrefix + 'SELECT',
-            id: feature.id
+            type: this.actionPrefix + 'ASSIGN_TO_SELECTED_WORKER',
+            group: feature.id,
+            tasks: feature.tasks
           });
 
-          this.context.store.dispatch({
-            type: this.actionPrefix + 'SCROLL_TO',
-            index: feature.id
-          });
+          // this.context.store.dispatch({
+          //   type: this.actionPrefix + 'SCROLL_TO',
+          //   index: feature.id
+          // });
 
+        });
+
+        marker.on('contextmenu', (e) => {
+          e.originalEvent.preventDefault();
+          this.popover.setTitle(feature.label);
+          this.popover.setContent('<p>...</p>');
+          this.popover.setLatLng(marker.getLatLng());
+          if (!this.popover._map) this.popovers.addLayer(this.popover);
         });
 
       }
