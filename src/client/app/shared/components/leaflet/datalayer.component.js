@@ -11,12 +11,14 @@ export class DataLayer extends React.Component {
     id: React.PropTypes.string.isRequired,
     actionPrefix: React.PropTypes.string,
     mapState: React.PropTypes.func,
-    layerType: React.PropTypes.string
+    layerType: React.PropTypes.string,
+    selectedClassName: React.PropTypes.string
   };
 
   static defaultProps = {
     actionPrefix: '',
     layerType: 'Point',
+    selectedClassName: 'feature-marker-selected',
     mapState: state => ({
       items: state.visible_items,
       selected: state.selected
@@ -60,31 +62,41 @@ export class DataLayer extends React.Component {
     this.context.registry.addLayer(this.props.id, this.__leaflet_component__);
     // this.context.registry.addLayer('popovers', popovers);
     this.dispose = this.context.store.subscribe(() => {
-      let newState = this.mapContextToState();
-      if (newState.items != this.state.items) {
-        this.state = newState;
+      let nextState = this.mapContextToState();
+      if (this.shouldUpdateLayer(nextState)) {
+        this.state = nextState;
         this.updateLayer();
-      } else if (newState.selected != this.state.selected) {
-        this.state = newState;
-        if (this.props.layerType == 'Point') {
-          this.updateSelection();
-        } else {
-          this.updateLayer();
-        }
+      } else if (this.shouldUpdateSelection(nextState)) {
+        this.state = nextState;
+        this.updateSelection();
       }
     });
+  }
+
+  shouldUpdateLayer(nextState) {
+    return (nextState.items != this.state.items) ||
+      this.shouldUpdateSelection(nextState) &&
+      this.props.layerType != 'Point';
+  }
+
+  shouldUpdateSelection(nextState) {
+    return (nextState.selected != this.state.selected);
+  }
+
+  setMarkerStyle(marker) {
+    if (marker._icon) {
+      if (this.state.selected.includes(marker.feature.id)) {
+        marker._icon.classList.add(this.props.selectedClassName);
+      } else {
+        marker._icon.classList.remove(this.props.selectedClassName);
+      }
+    }
   }
 
   updateSelection() {
     Object.keys(this.__leaflet_component__._layers).forEach(key => {
       let marker = this.__leaflet_component__._layers[key];
-      if (marker._icon) {
-        if (this.state.selected.includes(marker.feature.id)) {
-          marker._icon.classList.add('feature-marker-selected');
-        } else {
-          marker._icon.classList.remove('feature-marker-selected');
-        }
-      }
+      this.setMarkerStyle(marker);
     });
   }
 

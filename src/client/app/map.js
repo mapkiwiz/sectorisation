@@ -19,6 +19,7 @@ export function MapContainer(props, context) {
       <WorkerLayer key="workers-layer"
                    id="workers"
                    actionPrefix="WORKER_"
+                   selectedClassName="worker-selected"
                    mapState={ state => ({ items: state.workers.visible_items, selected: state.workers.selected }) }>
       </WorkerLayer>
     </Map>

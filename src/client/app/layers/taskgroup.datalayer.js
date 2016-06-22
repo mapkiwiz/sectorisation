@@ -22,6 +22,35 @@ export class TaskGroupLayer extends  DataLayer {
         bottom: 0 }
     });
     this.context.registry.addLayer('popovers', this.popovers);
+    // console.log("Did mount TaskGroupLayer");
+  }
+
+  getLabelClassName(feature) {
+    // TODO legend partially assigned taskgroups
+    if (this.state.selected.includes(feature.id)) {
+      return 'taskgroup-assigned-selected';
+    } else {
+      let groups = this.context.store.getState().assignments.groups;
+      if (groups[feature.id]) {
+        return 'taskgroup-assigned';
+      } else {
+        return 'taskgroup-unassigned';
+      }
+    }
+  }
+
+  setMarkerStyle(marker) {
+     if (marker._icon) {
+       [
+         'taskgroup-unassigned',
+         'taskgroup-assigned',
+         'taskgroup-assigned-selected',
+         'taskgroup-partially-assigned'
+       ].forEach(className => {
+         marker._icon.classList.remove(className);
+       });
+       marker._icon.classList.add(this.getLabelClassName(marker.feature));
+     }
   }
 
   get layerOptions() {
@@ -41,15 +70,21 @@ export class TaskGroupLayer extends  DataLayer {
 
       onEachFeature: (feature, marker) => {
 
+        function toggleLabel(mapEvent) {
+          let zoom = mapEvent.target.getZoom();
+          if (zoom > 10) {
+            marker._icon.classList.add('high-zoom');
+          } else {
+            marker._icon.classList.remove('high-zoom');
+          }
+        }
+
         marker.on('add', function(markerEvent) {
-          markerEvent.target._map.on('zoomend', function(mapEvent) {
-            let zoom = mapEvent.target.getZoom();
-            if (zoom > 10) {
-              marker._icon.classList.add('high-zoom');
-            } else {
-              marker._icon.classList.remove('high-zoom');
-            }
-          });
+          markerEvent.target._map.on('zoomend', toggleLabel);
+        });
+
+        marker.on('remove', function(markerEvent) {
+          markerEvent.target._map.off('zoomend', toggleLabel);
         });
 
         // marker.bindLabel(feature.label, {
@@ -60,9 +95,15 @@ export class TaskGroupLayer extends  DataLayer {
         marker.on('click', () => {
 
           this.context.store.dispatch({
-            type: this.actionPrefix + 'ASSIGN_TO_SELECTED_WORKER',
-            group: feature.id,
+            type: this.actionPrefix + 'TOGGLE_ASSIGN',
+            group: feature,
             tasks: feature.tasks
+          });
+
+
+          this.context.store.dispatch({
+             type: this.actionPrefix + 'TOGGLE',
+             id: feature.id
           });
 
           // this.context.store.dispatch({
