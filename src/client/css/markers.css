@@ -32,6 +32,99 @@
   color: gold;
 }
 
+/* Worker Markers */
+
+.worker-marker {
+  font-size: 30px;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+}
+
+.worker-selected {
+  color: gold;
+}
+
+.worker-untasked {
+  color: #337ab7;
+}
+
+.worker-low-tasked {
+  color: #cf0;
+}
+
+.worker-medium-tasked {
+color: limegreen;
+}
+
+.worker-fully-tasked {
+  color: #006600;
+}
+
+.worker-over-tasked {
+  color: firebrick;
+}
+
+.worker-inactive {
+  font-size: 20px;
+  color: darkgrey;
+}
+
+/* Task group Markers */
+
+.taskgroup-marker {
+  font-size: 30px;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+}
+
+.taskgroup-unassigned {
+  color: darkslateblue;
+}
+
+.taskgroup-unassigned .badge {
+  background-color: darkslateblue;
+}
+
+.taskgroup-partially-assigned {
+ color: darkorange;
+}
+
+.taskgroup-partially-assigned .badge {
+  background-color: darkorange;
+}
+
+.taskgroup-assigned {
+  color: darkgrey;
+}
+
+.taskgroup-assigned .badge {
+  background-color: darkgrey;
+}
+
+.taskgroup-assigned-selected {
+  color: gold;
+}
+
+.taskgroup-assigned-selected .badge {
+  background-color: gold;
+}
+
+.marker-label .details {
+  display: none;
+}
+
+.marker-label.high-zoom .details {
+  display: inline;
+}
+
+/* Task marker */
+
 .task-marker {
   font-size: 20px;
   color: darkgrey;

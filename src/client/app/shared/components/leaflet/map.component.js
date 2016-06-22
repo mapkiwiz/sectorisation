@@ -18,6 +18,7 @@ export class LayerRegistry {
     this.map = map;
     this.order.forEach(key => {
       console.log(key);
+      console.log(this.layers[key]);
       this.map.addLayer(this.layers[key]);
     });
   }
