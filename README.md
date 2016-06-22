@@ -1,3 +1,4 @@
 # Sectorisation
 
-Assign tasks to workers spatially
+Locate tasks and executors on a map,
+and assign tasks to executors by location.

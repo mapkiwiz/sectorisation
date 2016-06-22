@@ -18,7 +18,7 @@ function renderWorkerItem(item, context) {
       <span className="badge">{ assignments }</span>
       <span style={{ marginLeft: '10px', verticalAlign: 'middle' }}>{ item.label }</span>
       <div className="pull-right">
-        <Link to="/worker/details">
+        <Link to="/worker/details" onClick={e => e.stopPropagation() }>
           <span className="glyphicon glyphicon-chevron-right"></span>
         </Link>
       </div>

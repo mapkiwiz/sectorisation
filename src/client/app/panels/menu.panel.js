@@ -6,7 +6,7 @@ export function MenuPanel(props, context) {
 
   return (
     <div className="col-md-4 col-md-offset-8 panel-container">
-      <h3>Menu principal</h3>
+      <h3>Outil de sectorisation</h3>
       <hr/>
       <MessagePanel></MessagePanel>
       <ul className="list">

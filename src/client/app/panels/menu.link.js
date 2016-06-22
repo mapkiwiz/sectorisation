@@ -7,7 +7,7 @@ export function MenuLink(props, context) {
 
   return (
     <Link to={ linkTo } className="pull-right">
-      <span className="glyphicon glyphicon-menu-hamburger"></span>
+      <span className="glyphicon glyphicon-home"></span>
     </Link>
   );
 

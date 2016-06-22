@@ -6,11 +6,14 @@ import {WorkersListPanel} from './panels/workers.list.panel';
 import {WorkerDetailsPanel} from './panels/worker.details.panel';
 import {TaskGroupsListPanel} from './panels/taskgroups.list.panel';
 import {TasksListPanel} from './panels/tasks.list.panel';
-import {ProjectPanel} from './panels/project.panel';
 import {ImportMenu} from './menus/import.menu';
 import {TasksImportPanel} from './panels/tasks.import.panel';
 import {WorkersImportPanel} from './panels/workers.import.panel';
 import {LayerSwitcherPanel} from './panels/layerswitcher.panel';
+import {ProjectMenu} from './menus/project.menu';
+import {ProjectOpenPanel} from './panels/project.open.panel';
+import {ProjectPropertiesPanel} from './panels/project.properties.panel';
+import {ExportQGisPanel} from './panels/export.qgis.panel';
 
 function RootPanel(props, context) {
   return (
@@ -41,11 +44,16 @@ export class App extends React.Component {
   render() {
     return (
       <div>
-        <MapContainer></MapContainer>
+        <MapContainer />
         <Router history={ browserHistory } >
           <Route path="/" component={ RootPanel }>
             <IndexRoute component={ MenuPanel } />
-            <Route path="/project" component={ ProjectPanel } />
+            <Route path="/project" >
+              <IndexRoute component={ ProjectMenu } />
+              <Route path="/project/open" component={ ProjectOpenPanel } />
+              <Route path="/project/export/qgis" component={ ExportQGisPanel } />
+              <Route path="/project/properties" component={ ProjectPropertiesPanel } />
+            </Route>
             <Route path="/import">
               <IndexRoute component={ ImportMenu } />
               <Route path="/import/workers" component={ WorkersImportPanel } />

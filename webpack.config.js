@@ -58,7 +58,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'dist/' + ENV),
-    publicPath: '/',
+    publicPath: argv['base'] || '/',
     filename: '[name].js'
   },
 

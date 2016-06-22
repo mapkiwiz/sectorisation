@@ -72,7 +72,7 @@ export class TaskGroupLayer extends  DataLayer {
 
         function toggleLabel(mapEvent) {
           let zoom = mapEvent.target.getZoom();
-          if (zoom > 10) {
+          if (zoom > 9) {
             marker._icon.classList.add('high-zoom');
           } else {
             marker._icon.classList.remove('high-zoom');
@@ -116,7 +116,7 @@ export class TaskGroupLayer extends  DataLayer {
         marker.on('contextmenu', (e) => {
           e.originalEvent.preventDefault();
           this.popover.setTitle(feature.label);
-          this.popover.setContent('<p>...</p>');
+          this.popover.setContent('<p><span class="badge">' + feature.tasks.length + '</span> <a href="#" data-group-id="' + feature.id + '" onClick="L.Popover.doContextAction(arguments[0])">Unités statistiques</a></p>');
           this.popover.setLatLng(marker.getLatLng());
           if (!this.popover._map) this.popovers.addLayer(this.popover);
         });
@@ -127,3 +127,8 @@ export class TaskGroupLayer extends  DataLayer {
   }
 
 }
+
+Leaflet.Popover.doContextAction = function(e) {
+  e.preventDefault();
+  console.log('GroupId -> ' + e.target.dataset.groupId);
+};

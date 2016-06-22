@@ -3,10 +3,10 @@ import {listReducer} from './list.reducer';
 import {isochrones} from './isochrones';
 import {assignmentReducer} from './assignments';
 import {groupReducer} from './groups';
-import {settingReducer} from './settings';
+import {projectReducer} from './project';
 
 let reducer = combineReducers({
-  settings: settingReducer,
+  project: projectReducer,
   workers: listReducer('WORKER_'),
   groups: groupReducer,
   tasks: listReducer('TASK_'),
