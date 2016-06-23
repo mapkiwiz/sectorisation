@@ -14,6 +14,7 @@ import {ProjectMenu} from './menus/project.menu';
 import {ProjectOpenPanel} from './panels/project.open.panel';
 import {ProjectPropertiesPanel} from './panels/project.properties.panel';
 import {ExportQGisPanel} from './panels/export.qgis.panel';
+import {LegendPanel, WorkerLegend, GroupLegend, Legends} from './panels/legend.panel';
 
 function RootPanel(props, context) {
   return (
@@ -64,6 +65,11 @@ export class App extends React.Component {
             <Route path="/communes" component={ TaskGroupsListPanel } />
             <Route path="/tasks" component={ TasksListPanel } />
             <Route path="/baselayers" component={ LayerSwitcherPanel } />
+            <Route path="/legend" component={ LegendPanel } >
+              <IndexRoute component={ Legends } />
+              <Route path="/legend/workers" component={ WorkerLegend } />
+              <Route path="/legend/groups" component={ GroupLegend } />
+            </Route>
           </Route>
         </Router>
       </div>

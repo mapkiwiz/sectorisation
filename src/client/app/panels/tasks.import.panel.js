@@ -144,7 +144,7 @@ export class TasksImportPanel extends React.Component {
 
     let groups = this.groupByLocation(geocodedItems, params.idField);
     console.log(groups);
-    let items = this.itemsToGeoJSON(geocodedItems, params);
+    let items = this.itemsToGeoJSON(geocodedItems, params.idField, params.labelField);
 
     this.context.store.dispatch({
       type: 'GROUP_SET_ITEMS',

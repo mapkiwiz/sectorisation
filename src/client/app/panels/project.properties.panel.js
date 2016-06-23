@@ -1,5 +1,6 @@
 import React from 'react';
 import {MenuLink} from './menu.link';
+import {ProjectPropertiesForm} from '../forms/project.properties.form';
 
 export function ProjectPropertiesPanel(props, context) {
   return (
@@ -9,7 +10,7 @@ export function ProjectPropertiesPanel(props, context) {
         <MenuLink />
       </h3>
       <hr/>
-      <p className="help-block">Pas encore implémenté</p>
+      <ProjectPropertiesForm />
     </div>
   );
 }

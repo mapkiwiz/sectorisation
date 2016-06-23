@@ -4,6 +4,11 @@ let initialState = {
   id: generateUniqueProjectId(),
   title: '',
   description: '',
+  settings: {
+    'export.region.key': 'REGION',
+    'export.enquete.key': 'ENQUETE',
+    'export.orge.delimiter': ';'
+  },
   defaults: {
     'worker.capacity': 20,
     'worker.reach': 20,

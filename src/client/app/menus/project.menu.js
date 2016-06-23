@@ -26,7 +26,7 @@ export class ProjectMenu extends React.Component {
 
   doExportProject(e) {
     e.preventDefault();
-    exportProject();
+    exportProject(this.context.store.getState());
     this.context.messenger.setMessage('Projet exporté vers Orge', 'success');
     this.setState({ done: true });
   }

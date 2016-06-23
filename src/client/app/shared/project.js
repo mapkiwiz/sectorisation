@@ -1,5 +1,6 @@
 import LZString from 'lz-string';
 import slug from 'slug/slug-browser';
+import _ from 'lodash';
 
 export function generateUniqueProjectId() {
 
@@ -73,7 +74,29 @@ export function removeProject(projectId) {
   }
 }
 
-export function exportProject() {}
+export function exportProject(state) {
+
+  const REG_KEY = state.project.settings['export.region.key'];
+  const ENQ_KEY = state.project.settings['export.enquete.key'];
+  const DELIMITER = state.project.settings['export.orge.delimiter'];
+
+  let data = [[ 'REG', 'ENQ', 'US', 'ENQTR' ].join(DELIMITER) + '\n'];
+  _.each(state.tasks.items, (task) => {
+    console.log(task);
+    let row = [
+      task.properties[REG_KEY],
+      task.properties[ENQ_KEY],
+      task.id,
+      state.assignments.tasks[task.id]];
+    data.push(row.join(DELIMITER) + '\n');
+  });
+
+  triggerDownload(
+    data.join(''),
+    slug(state.project.title || 'Sans titre') + '-' + state.project.id + '.csv',
+    'text/csv');
+
+}
 
 function triggerDownload(data, filename, mimeType) {
 
