@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Outil d'affectation des enquêteurs aux unités statistiques",
   "repository": {
-    "url": "https://github.com/mgechev/angular2-seed"
+    "url": "https://github.com/mapkiwiz/sectorisation"
   },
   "scripts": {
     "build.dev": "webpack --colors --progress --env dev",
@@ -31,8 +31,8 @@
     "webdriver-start": "webdriver-manager start",
     "webdriver-update": "webdriver-manager update"
   },
-  "author": "Minko Gechev <mgechev>",
-  "license": "MIT",
+  "author": "Christophe ROUSSON",
+  "license": "AGPL",
   "devDependencies": {
     "async": "^1.4.2",
     "autoprefixer": "^6.3.3",
@@ -71,6 +71,7 @@
     "gulp-imagemin": "^2.4.0",
     "gulp-inject": "^4.0.0",
     "gulp-load-plugins": "^1.2.0",
+    "gulp-maven-deploy": "^1.0.0-beta.5",
     "gulp-plumber": "~1.1.0",
     "gulp-postcss": "^6.1.0",
     "gulp-shell": "~0.5.2",
@@ -82,6 +83,7 @@
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
+    "gulp-zip": "^3.2.0",
     "html-webpack-plugin": "^2.19.0",
     "imagemin-pngquant": "^5.0.0",
     "is-ci": "^1.0.8",

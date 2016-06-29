@@ -1,8 +1,5 @@
 import _ from 'lodash';
-import {GPPIsochroneService} from '../services/gpp.isochrone.service';
 import {config} from '../../config/index';
-
-const distance = config.isochrone.distance;
 
 export class IsochroneUpdater {
 
@@ -14,18 +11,17 @@ export class IsochroneUpdater {
 
   constructor(store) {
     this.store = store;
-    this.isochrone_service = new GPPIsochroneService({
-      url: config.gpp_isochrone_url,
-      referer: config.gpp_referer,
-      concavity: config.isochrone.concavity
-    });
+    this.isochrone_service = config['IsochroneService'];
     this.dispose = store.subscribe(() => {
       let selection = _.first(this.store.getState().workers.selected);
       if (selection != this.selection) {
-        this.selection = selection;
-        this.selectIsochrone(this.findFeature(this.selection), distance);
+          this.selectIsochrone(this.findFeature(selection), 0);
       }
     });
+  }
+
+  get defaultReach() {
+    return this.store.getState().project.defaults['worker.reach'];
   }
 
   doAction(action) {
@@ -40,6 +36,9 @@ export class IsochroneUpdater {
 
   selectIsochrone(feature, distance) {
 
+    console.log('SelectIsochrone');
+    console.log(feature);
+
     if (!this.dispatching) {
 
       this.dispatching = true;
@@ -53,6 +52,8 @@ export class IsochroneUpdater {
       if (_.has(isochrones, feature.id)) {
         this.doAction({type: 'ISOCHRONE_SELECT', key: feature.id});
       } else {
+        let distance = feature.properties.reach || this.defaultReach;
+        console.log('Distance -> ' + distance);
         this.isochrone_service.fetch(feature, distance).then(result => {
           this.doAction({type: 'ISOCHRONE_STORE', key: feature.id, payload: result});
           this.doAction({type: 'ISOCHRONE_SELECT', key: feature.id});

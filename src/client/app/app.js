@@ -15,6 +15,7 @@ import {ProjectOpenPanel} from './panels/project.open.panel';
 import {ProjectPropertiesPanel} from './panels/project.properties.panel';
 import {ExportQGisPanel} from './panels/export.qgis.panel';
 import {LegendPanel, WorkerLegend, GroupLegend, Legends} from './panels/legend.panel';
+import {IsochroneLoadingPanel} from './panels/isochrone.loading.panel';
 
 function RootPanel(props, context) {
   return (
@@ -54,6 +55,7 @@ export class App extends React.Component {
               <Route path="/project/open" component={ ProjectOpenPanel } />
               <Route path="/project/export/qgis" component={ ExportQGisPanel } />
               <Route path="/project/properties" component={ ProjectPropertiesPanel } />
+              <Route path="/project/isochrones" component={ IsochroneLoadingPanel } />
             </Route>
             <Route path="/import">
               <IndexRoute component={ ImportMenu } />

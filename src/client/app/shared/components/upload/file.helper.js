@@ -2,8 +2,12 @@ import parse from 'csv-parse';
 
 export function parseAsObject(data, options, callback) {
   parse(data, options, (err, out) => {
+    if (err) {
+      callback(err);
+      return;
+    }
     let header = out.shift();
-    callback(out.map(item => {
+    callback(undefined, out.map(item => {
       return item.reduce((res, value, index) => {
         res[header[index]] = value;
         return res;

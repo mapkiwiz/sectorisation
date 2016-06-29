@@ -59,6 +59,7 @@ export class ProjectMenu extends React.Component {
           <li><a href="#" onClick={ e => this.doExportProject(e) }>Exporter les affectations vers Orge</a></li>
           <li><Link to="/project/export/qgis">Exporter vers QGis</Link></li>
           <li><Link to="/project/properties">Propriétés du projet</Link></li>
+          <li><Link to="/project/isochrones">Isochrones</Link></li>
         </ul>
       </div>
     );

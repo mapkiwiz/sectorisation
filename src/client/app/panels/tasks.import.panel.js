@@ -1,5 +1,6 @@
 import React from 'react';
 import {MenuLink} from './menu.link';
+import {MessagePanel} from './message.panel';
 import {TasksImportForm} from '../forms/tasks.import.form';
 import {parseFile} from '../shared/components/upload/file.helper';
 import {DropZone} from '../shared/components/upload/dropzone.component';
@@ -31,10 +32,21 @@ export class TasksImportPanel extends React.Component {
       file: undefined,
       headers: undefined,
       data: undefined,
-      processing: false
+      processing: true
     });
 
-    parseFile(file, data, o => {
+    parseFile(file, data, (err, o) => {
+      if (err) {
+        this.context.messenger.setMessage(
+          "Erreur lors de l'import du fichier : " + err.message, 'danger');
+        this.setState({
+          file: undefined,
+          headers: undefined,
+          data: undefined,
+          processing: false
+        });
+        return;
+      }
       if (_.isArray(o)) {
         let headers = _.keys(_.first(o));
         this.setState({
@@ -186,6 +198,7 @@ export class TasksImportPanel extends React.Component {
     } else {
       content = (
         <div className="form-horizontal">
+          <MessagePanel />
           <DropZone width="100%"
                     height="50px"
                     onDrop={ (file, data) => this.onDrop(file, data) } >
@@ -204,6 +217,7 @@ export class TasksImportPanel extends React.Component {
           <MenuLink to="/import" />
         </h3>
         <hr/>
+        <MessagePanel />
         { content }
       </div>
     );
