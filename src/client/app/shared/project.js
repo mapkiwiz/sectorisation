@@ -98,6 +98,35 @@ export function exportProject(state) {
 
 }
 
+export function exportAsGeoJSON(state) {
+  let collection = {
+    type: 'FeatureCollection',
+    crs: {
+      type: 'name',
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
+    }
+  };
+  collection.features = state.groups.items.map(group => {
+    let workerId = state.assignments.groups[group.id];
+    let worker = _.find(state.workers.items, o => (o.id == workerId ));
+    return {
+      type: 'Feature',
+      properties: {
+        ...group.properties,
+        enqueteur_id: worker.id,
+        enqueteur: worker.label,
+        nb_us: group.tasks.length
+      },
+      geometry: group.geometry
+    };
+  });
+  triggerDownload(
+    JSON.stringify(collection),
+    slug(state.project.title || 'Sans titre') + '-' + state.project.id + '.geojson',
+    'application/json'
+  );
+}
+
 function triggerDownload(data, filename, mimeType) {
 
   let blob = new Blob([ data ], {

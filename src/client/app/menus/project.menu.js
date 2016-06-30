@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import {MenuLink} from '../panels/menu.link';
 import {MessagePanel} from '../panels/message.panel';
-import {saveProject, saveProjectAs, exportProject} from '../shared/project';
+import {saveProject, saveProjectAs, exportProject, exportAsGeoJSON} from '../shared/project';
 
 export class ProjectMenu extends React.Component {
 
@@ -34,12 +34,24 @@ export class ProjectMenu extends React.Component {
   doSaveAndCreateNewProject(e) {
     let state = this.context.store.getState();
     saveProject(state);
+    // dont't e.preventDefault();
+    // link navigation will create the new project
   }
 
   doSaveProjectAs(e) {
     e.preventDefault();
     let state = this.context.store.getState();
     saveProjectAs(state);
+    this.context.messenger.setMessage('Projet enregistré', 'success');
+    this.setState({ done: true });
+  }
+
+  doExportAsGeoJSON(e) {
+    e.preventDefault();
+    let state = this.context.store.getState();
+    exportAsGeoJSON(state);
+    this.context.messenger.setMessage('Affectations exportées au format GeoJSON', 'success');
+    this.setState({ done: true });
   }
 
   render() {
@@ -57,7 +69,7 @@ export class ProjectMenu extends React.Component {
           <li><a href="#" onClick={ e => this.doSaveProject(e) }>Enregistrer</a></li>
           <li><a href="#" onClick={ e => this.doSaveProjectAs(e) }>Enregistrer sous ...</a></li>
           <li><a href="#" onClick={ e => this.doExportProject(e) }>Exporter les affectations vers Orge</a></li>
-          <li><Link to="/project/export/qgis">Exporter vers QGis</Link></li>
+          <li><a href="#" onClick={ e => this.doExportAsGeoJSON(e) }>Exporter vers QGis</a></li>
           <li><Link to="/project/properties">Propriétés du projet</Link></li>
           <li><Link to="/project/isochrones">Isochrones</Link></li>
         </ul>

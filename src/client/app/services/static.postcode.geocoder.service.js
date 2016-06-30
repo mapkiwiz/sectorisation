@@ -14,7 +14,7 @@ function rowToGeoJSON(header, row) {
     type: 'Feature',
     id: properties.CODE_POSTAL,
     label: properties.COMMUNE,
-    geometry: { type: 'Point', coordinates: [ properties.LONGITUDE, properties.LATITUDE ] },
+    geometry: { type: 'Point', coordinates: [ +properties.LONGITUDE, +properties.LATITUDE ] },
     properties: _.omit(properties, [ 'LONGITUDE', 'LATITUDE' ])
   };
 }

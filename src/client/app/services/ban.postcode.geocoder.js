@@ -10,6 +10,7 @@ export function geocoder(key, postcode, city) {
   let params = new URLSearchParams();
   params.set('postcode', postcode);
   params.set('q', city);
+  
   return fetch(url + "?" + params.toString()).then(response => {
     if (response.status >= 400) throw new Error('Bad Response');
     return response.json();
