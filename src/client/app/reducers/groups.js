@@ -16,8 +16,6 @@ function resetGroupSelection(state) {
   return { ...state, selected: [] };
 }
 
-let previousToggleId;
-
 export function groupReducer(state = groupInitialState, action) {
   switch (action.type) {
     case 'WORKER_SELECT':

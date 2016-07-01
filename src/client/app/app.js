@@ -16,6 +16,9 @@ import {ProjectPropertiesPanel} from './panels/project.properties.panel';
 import {ExportQGisPanel} from './panels/export.qgis.panel';
 import {LegendPanel, WorkerLegend, GroupLegend, Legends} from './panels/legend.panel';
 import {IsochroneLoadingPanel} from './panels/isochrone.loading.panel';
+import {AssignmentMenu} from './menus/assignment.menu';
+import {AutoAssignPanel} from './panels/auto.assign.panel';
+import {AssignDashboardPanel} from './panels/assign.dashboard.panel';
 
 function RootPanel(props, context) {
   return (
@@ -55,12 +58,17 @@ export class App extends React.Component {
               <Route path="/project/open" component={ ProjectOpenPanel } />
               <Route path="/project/export/qgis" component={ ExportQGisPanel } />
               <Route path="/project/properties" component={ ProjectPropertiesPanel } />
-              <Route path="/project/isochrones" component={ IsochroneLoadingPanel } />
             </Route>
             <Route path="/import">
               <IndexRoute component={ ImportMenu } />
               <Route path="/import/workers" component={ WorkersImportPanel } />
               <Route path="/import/tasks" component={ TasksImportPanel } />
+            </Route>
+            <Route path="/assign">
+              <IndexRoute component={ AssignmentMenu } />
+              <Route path="/assign/isochrones" component={ IsochroneLoadingPanel } />
+              <Route path="/assign/auto" component={ AutoAssignPanel } />
+              <Route path="/assign/dashboard" component={ AssignDashboardPanel } />
             </Route>
             <Route path="/workers" component={ WorkersListPanel } />
             <Route path="/worker/details" component={ WorkerDetailsPanel } />

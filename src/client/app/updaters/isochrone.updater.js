@@ -53,7 +53,6 @@ export class IsochroneUpdater {
         this.doAction({type: 'ISOCHRONE_SELECT', key: feature.id});
       } else {
         let distance = feature.properties.reach || this.defaultReach;
-        console.log('Distance -> ' + distance);
         this.isochrone_service.fetch(feature, distance).then(result => {
           this.doAction({type: 'ISOCHRONE_STORE', key: feature.id, payload: result});
           this.doAction({type: 'ISOCHRONE_SELECT', key: feature.id});

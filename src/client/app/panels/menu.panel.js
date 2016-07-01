@@ -14,6 +14,7 @@ export function MenuPanel(props, context) {
         <li><Link to="/workers">Enquêteurs</Link></li>
         <li><Link to="/tasks">Unités statistiques</Link></li>
         <li><Link to="/import">Importer des données</Link></li>
+        <li><Link to="/assign">Outils d'affectation</Link></li>
         <li><Link to="/baselayers">Fonds de plan</Link></li>
         <li><Link to="/legend">Légende</Link></li>
       </ul>

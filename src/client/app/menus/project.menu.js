@@ -64,14 +64,13 @@ export class ProjectMenu extends React.Component {
         <hr/>
         <MessagePanel />
         <ul className="list">
+          <li><Link to="/project/properties">Propriétés du projet</Link></li>
           <li><Link to="/project/open">Ouvrir un projet existant</Link></li>
           <li><a href="" onClick={ e => this.doSaveAndCreateNewProject(e) }>Nouveau projet</a></li>
           <li><a href="#" onClick={ e => this.doSaveProject(e) }>Enregistrer</a></li>
           <li><a href="#" onClick={ e => this.doSaveProjectAs(e) }>Enregistrer sous ...</a></li>
           <li><a href="#" onClick={ e => this.doExportProject(e) }>Exporter les affectations vers Orge</a></li>
           <li><a href="#" onClick={ e => this.doExportAsGeoJSON(e) }>Exporter vers QGis</a></li>
-          <li><Link to="/project/properties">Propriétés du projet</Link></li>
-          <li><Link to="/project/isochrones">Isochrones</Link></li>
         </ul>
       </div>
     );

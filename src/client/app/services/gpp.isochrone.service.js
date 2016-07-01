@@ -23,7 +23,7 @@ export class GPPIsochroneService {
     search.set('holes', true);
     search.set('distance', distance);
     search.set('graphName', 'Voiture');
-    search.set('smooth', true);
+    search.set('smoothing', false);
 
     return fetch(this.url + '?' + search.toString(), {
       headers: {

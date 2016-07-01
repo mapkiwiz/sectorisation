@@ -27,9 +27,6 @@ export function assignTaskToSelectedWorker(state, taskId) {
 
 export function unassignTask(state, taskId) {
 
-  let workerId = state.selectedWorker;
-  if (!workerId) return state;
-
   let previousWorker = state.tasks[taskId];
   let st = {
     selectedWorker: state.selectedWorker,
@@ -73,7 +70,7 @@ function unassignGroup(state, action) {
   };
 }
 
-export function _assignmentReducer(state = initialState, action) {
+export function assignmentReducer(state = initialState, action) {
   switch (action.type) {
     case 'WORKER_SELECT':
     case 'WORKER_SELECT_ONE':
@@ -88,6 +85,9 @@ export function _assignmentReducer(state = initialState, action) {
     case 'WORKER_UNSELECT':
       return { ...state, selectedWorker: undefined };
     case 'GROUP_ASSIGN':
+      // if (action.hasOwnProperty('worker')) {
+      //  state.selectedWorker = action.worker;
+      // }
       return assignGroup(state, action);
     case 'GROUP_UNASSIGN':
       return unassignGroup(state, action);
@@ -104,11 +104,4 @@ export function _assignmentReducer(state = initialState, action) {
     default:
       return state;
   }
-}
-
-export function assignmentReducer(state = initialState, action) {
-  console.log(action);
-  let _state = _assignmentReducer(state, action);
-  console.log(_state);
-  return _state;
 }

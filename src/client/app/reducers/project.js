@@ -11,8 +11,8 @@ let initialState = {
   },
   defaults: {
     'worker.capacity': 20,
-    'worker.reach': 20,
-    'worker.reach.type': 'distance_km'
+    'worker.reach': 20000,
+    'worker.reach.type': 'distance_m'
   }
 };
 

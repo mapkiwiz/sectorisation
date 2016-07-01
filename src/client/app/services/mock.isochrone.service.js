@@ -3,6 +3,8 @@ import Leaflet from 'leaflet';
 
 const earthRadius = 6378137;
 
+Promise.config({ cancellation: true });
+
 export class MockIsochroneService {
 
   circle(center, radius, points) {
@@ -35,10 +37,10 @@ export class MockIsochroneService {
       setTimeout(() => {
         let result = {
           type: 'Polygon',
-          coordinates: [ this.circle(feature.geometry, distance*1000, 15) ]
+          coordinates: [ this.circle(feature.geometry, distance, 15) ]
         };
         resolve(result);
-      }, Math.random() * 5000);
+      }, Math.random() * 2000);
     });
 
   }

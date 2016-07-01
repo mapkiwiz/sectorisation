@@ -3,7 +3,8 @@ module.exports = {
     "url": "http://api.adresse.data.gouv.fr/search/"
   },
   "isochrone": {
-    "concavity": 2,
-    "distance": 20000
+    "distance": 20000,
+    "timeout": 5000,
+    "concurrency": 4
   }
 };
