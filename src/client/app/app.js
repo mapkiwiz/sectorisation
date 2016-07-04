@@ -71,7 +71,7 @@ export class App extends React.Component {
               <Route path="/assign/dashboard" component={ AssignDashboardPanel } />
             </Route>
             <Route path="/workers" component={ WorkersListPanel } />
-            <Route path="/worker/details" component={ WorkerDetailsPanel } />
+            <Route path="/worker/:id/details" component={ WorkerDetailsPanel } />
             <Route path="/communes" component={ TaskGroupsListPanel } />
             <Route path="/tasks" component={ TasksListPanel } />
             <Route path="/baselayers" component={ LayerSwitcherPanel } />

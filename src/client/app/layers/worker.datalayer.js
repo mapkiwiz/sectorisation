@@ -3,6 +3,10 @@ import {DataLayer} from '../shared/components/leaflet/datalayer.component';
 import '../shared/components/leaflet/label';
 
 export class WorkerLayer extends  DataLayer {
+  
+  workerCapacity(worker) {
+    return worker.properties.capacity || this.state.defaultCapacity;
+  }
 
   getMarkerClassName(feature) {
     if (this.state.selected.includes(feature.id)) {
@@ -14,11 +18,11 @@ export class WorkerLayer extends  DataLayer {
       let taskload = workers[feature.id] || 0;
       if (taskload == 0) {
         return 'worker-untasked';
-      } else if (taskload < 0.5*feature.properties.capacity) {
+      } else if (taskload < 0.5*this.workerCapacity(feature)) {
         return 'worker-low-tasked';
-      } else if (taskload < 0.8*feature.properties.capacity) {
+      } else if (taskload < 0.8*this.workerCapacity(feature)) {
         return 'worker-medium-tasked';
-      } else if (taskload > feature.properties.capacity) {
+      } else if (taskload > this.workerCapacity(feature)) {
         return 'worker-over-tasked';
       } else {
         return 'worker-fully-tasked';

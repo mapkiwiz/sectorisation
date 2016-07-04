@@ -23,7 +23,7 @@ export function MapContainer(props, context) {
                    id="workers"
                    actionPrefix="WORKER_"
                    selectedClassName="worker-selected"
-                   mapState={ state => ({ items: state.workers.visible_items, selected: state.workers.selected }) }>
+                   mapState={ state => ({ items: state.workers.visible_items, selected: state.workers.selected, defaultCapacity: state.project.defaults['worker.capacity'] }) }>
       </WorkerLayer>
     </Map>
   );
