@@ -21,7 +21,7 @@
 3. Packaging as webjar
 
   ```
-  npm run webjar -- --groupId com.example --version 1.0.0-SNAPHSOT
+  npm run webjar -- --groupId com.example --version 1.0.0-SNAPHSOT --base "/context/path/"
   ```
 
   This script requires maven is installed on local system.  

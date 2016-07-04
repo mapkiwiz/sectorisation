@@ -1,7 +1,7 @@
 import React from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import {guessField} from './utils';
-import template from './csv.import.form.rt';
+import template from './task.import.form.rt';
 
 let TasksImportForm = React.createClass({
 
