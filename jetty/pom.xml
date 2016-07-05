@@ -36,11 +36,9 @@
               <mainClass>${main.class}</mainClass>
             </manifest>
           </archive>
-          <descriptors>
-            <descriptor>jar-with-dependencies</descriptor>
-            <!-- this is defined to be executed afterwards -->
-            <!-- <descriptor>src/main/assembly/zip.xml</descriptor> -->
-          </descriptors>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
         </configuration>
         <executions>
           <execution>

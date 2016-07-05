@@ -1,11 +1,7 @@
 package fr.gouv.agriculture.stats.sectorisation;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.Properties;
-
-import javax.servlet.DispatcherType;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -15,9 +11,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +30,10 @@ public class AppServer {
 
   public void start() throws Exception {
 
-    ServletContextHandler servletContextHandler = new ServletContextHandler(
-      ServletContextHandler.NO_SECURITY |
-        ServletContextHandler.NO_SESSIONS);
-    servletContextHandler.setContextPath("/sectorisation");
+//    ServletContextHandler servletContextHandler = new ServletContextHandler(
+//      ServletContextHandler.NO_SECURITY |
+//        ServletContextHandler.NO_SESSIONS);
+//    servletContextHandler.setContextPath("/sectorisation");
 
     ContextHandler context = new ContextHandler();
     context.setContextPath("/sectorisation");
@@ -56,8 +49,8 @@ public class AppServer {
     server = new Server(port);
     server.setHandler(handlers);
     server.start();
-    System.out.println(server.dump());
-    server.join();
+    // System.out.println(server.dump());
+    // server.join();
 
   }
 
