@@ -58,6 +58,16 @@ export function saveProject(state) {
   window.localStorage.setItem('sectorisation.projects', JSON.stringify(projectList));
 }
 
+export function openProjectFile(data) {
+  console.log(data);
+  let uncompressed = LZString.decompressFromUTF16(data);
+  console.log(uncompressed);
+  let state = JSON.parse(uncompressed);
+  console.log(state);
+  saveProject(state);
+  return state;
+}
+
 export function saveProjectAs(state) {
   let projectData = LZString.compressToUTF16(JSON.stringify(state));
   triggerDownload(

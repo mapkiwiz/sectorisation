@@ -28,6 +28,9 @@ export function ProjectOpenPanel(props, context) {
       </h3>
       <hr/>
       <ul className="list">
+        <li key="open-project-file">
+          <Link to="/project/import">Importer un fichier projet</Link>
+        </li>
         { projects }
       </ul>
     </div>

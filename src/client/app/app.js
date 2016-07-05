@@ -13,6 +13,7 @@ import {LayerSwitcherPanel} from './panels/layerswitcher.panel';
 import {ProjectMenu} from './menus/project.menu';
 import {ProjectOpenPanel} from './panels/project.open.panel';
 import {ProjectPropertiesPanel} from './panels/project.properties.panel';
+import {ProjectImportPanel} from './panels/project.import.panel';
 import {ExportQGisPanel} from './panels/export.qgis.panel';
 import {LegendPanel, WorkerLegend, GroupLegend, Legends} from './panels/legend.panel';
 import {IsochroneLoadingPanel} from './panels/isochrone.loading.panel';
@@ -58,6 +59,7 @@ export class App extends React.Component {
               <Route path="/project/open" component={ ProjectOpenPanel } />
               <Route path="/project/export/qgis" component={ ExportQGisPanel } />
               <Route path="/project/properties" component={ ProjectPropertiesPanel } />
+              <Route path="/project/import" component={ ProjectImportPanel } />
             </Route>
             <Route path="/import">
               <IndexRoute component={ ImportMenu } />
