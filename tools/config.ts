@@ -1,15 +1,11 @@
-import {join} from 'path';
+const path = require('path');
 
-class Config {
-  DIST_DIR = "dist";
-  DEV_DEST = "dist/dev";
-  PROD_DEST = "dist/prod";
-  TMP_DIR = "dist/tmp";
-  TOOLS_DIR = "tools";
-  SEED_TASKS_DIR = join(process.cwd(), this.TOOLS_DIR, 'tasks', 'seed');
-  PROJECT_TASKS_DIR = join(process.cwd(), this.TOOLS_DIR, 'tasks', 'project');
-};
+const DIST_DIR = "dist";
+const DEV_DEST = "dist/dev";
+const PROD_DEST = "dist/prod";
+const TMP_DIR = "dist/tmp";
+const TOOLS_DIR = "tools";
+const SEED_TASKS_DIR = path.join(process.cwd(), this.TOOLS_DIR, 'tasks', 'seed');
+const PROJECT_TASKS_DIR = path.join(process.cwd(), this.TOOLS_DIR, 'tasks', 'project');
 
-var config = new Config();
-
-export = config;
+export { DIST_DIR, DEV_DEST, PROD_DEST, TMP_DIR, TOOLS_DIR, SEED_TASKS_DIR, PROJECT_TASKS_DIR };
