@@ -1,9 +1,0 @@
-<rt-import name="Map" from="../app/shared/components/leaflet/map.component" />
-<rt-import name="VecTileLayer" from="../app/shared/components/leaflet/vectilelayer.component" />
-<rt-import name="default" as="communes" from="../layers/communes.json" />
-
-<div>
-  <Map id="map" className="full-screen-map" view="{{ center: [46.1132, 6.4407], zoom: 12 }}">
-    <VecTileLayer key="{ communes.id }" rt-props="communes" ></VecTileLayer>
-  </Map>
-</div>
