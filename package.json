@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "typings install",
     "clean": "gulp clean",
-    "start": "webpack-dev-server --content-base dist/dev --progress --colors",
+    "start": "webpack-dev-server --content-base dist/dev --progress --colors --env prod",
     "build.dev": "webpack --colors --progress --env dev",
     "build.prod": "webpack --colors --progress -p --env prod",
     "webjar": "gulp maven.install.prod",
