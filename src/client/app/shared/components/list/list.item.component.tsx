@@ -3,8 +3,9 @@ import * as React from 'react';
 export interface  ListItemProps<T> {
   id: number;
   item: T;
-  renderItem: Function,
-  actionPrefix: string
+  renderItem: Function;
+  actionPrefix: string;
+  multiselection: boolean;
 }
 
 export interface ListItemState {
@@ -36,17 +37,25 @@ export class ListItem<T> extends React.Component<ListItemProps<T>, ListItemState
   }
 
   click(e: React.MouseEvent) {
+    e.preventDefault();
     if (this.state.selected) {
       this.doAction(this.unselect());
     } else {
-      this.doAction(this.select());
+      if (this.props.multiselection) {
+        this.doAction(this.select());
+      } else {
+        this.doAction(this.selectOne());
+      }
     }
-    e.preventDefault();
   }
 
   dblclick(e: React.MouseEvent){
-    this.doAction(this.selectOne());
     e.preventDefault();
+    if (this.state.selected) {
+      this.doAction(this.unselect());
+    } else {
+      this.doAction(this.selectOne());
+    }
   }
 
   doAction(action: {}) {

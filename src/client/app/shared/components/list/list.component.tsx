@@ -8,6 +8,7 @@ interface ListProps<T> {
   renderItem: Function;
   mapState: Function;
   scrollDelta: number;
+  multiselection: boolean;
 }
 
 interface ListState {
@@ -22,7 +23,8 @@ export class List<T> extends React.Component<ListProps<T>, ListState> {
     items: [],
     renderItem: (item: any) => item,
     mapState: (state: any) => state,
-    scrollDelta: 10
+    scrollDelta: 10,
+    multiselection: false
   };
 
   static contextTypes = {
@@ -126,6 +128,7 @@ export class List<T> extends React.Component<ListProps<T>, ListState> {
         <ListItem key={ item.id }
                   id={ item.id }
                   item={ item }
+                  multiselection={ this.props.multiselection }
                   actionPrefix={ this.props.actionPrefix }
                   renderItem={ this.props.renderItem }>
         </ListItem>
