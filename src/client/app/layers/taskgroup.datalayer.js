@@ -2,7 +2,7 @@ import Leaflet from 'leaflet';
 import {DataLayer} from '../shared/components/leaflet/datalayer.component';
 import '../shared/components/leaflet/label';
 import {Popover} from '../../lib/Leaflet.popover/index';
-import _ from 'lodash';
+import {toggleGroupAssignment} from '../actions/assignments';
 
 export class TaskGroupLayer extends  DataLayer {
 
@@ -94,12 +94,7 @@ export class TaskGroupLayer extends  DataLayer {
 
         marker.on('click', () => {
 
-          this.context.store.dispatch({
-            type: this.actionPrefix + 'TOGGLE_ASSIGN',
-            group: feature,
-            tasks: feature.tasks
-          });
-
+          this.context.store.dispatch(toggleGroupAssignment(feature));
 
           this.context.store.dispatch({
              type: this.actionPrefix + 'TOGGLE',

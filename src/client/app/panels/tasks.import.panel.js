@@ -81,12 +81,11 @@ export class TasksImportPanel extends React.Component {
   }
 
   accept(params) {
-    // geocode file/data
-    // option 1. CODE INSEE -> COMMUNE CENTROID
-    // option 2. CODE INSEE + COMMUNE -> BAN LOCATION
-    // option 3. CODE POSTAL -> POSTOFFICE CENTROID
-    // option 4. CODE POSTAL + COMMUNE -> BAN LOCATION
-    // option 5. XY -> COMMUNE -> COMMUNE CENTROID
+    
+    let project = this.context.store.getState().project;
+    project.settings['export.region.key'] = params.regionField;
+    project.settings['export.enquete.key'] = params.enqueteField;
+    
     switch (params.typeCodeCommune) {
       case 'insee':
 

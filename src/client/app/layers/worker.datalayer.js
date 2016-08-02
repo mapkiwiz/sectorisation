@@ -3,7 +3,7 @@ import {DataLayer} from '../shared/components/leaflet/datalayer.component';
 import '../shared/components/leaflet/label';
 
 export class WorkerLayer extends  DataLayer {
-  
+
   workerCapacity(worker) {
     return worker.properties.capacity || this.state.defaultCapacity;
   }
@@ -11,7 +11,7 @@ export class WorkerLayer extends  DataLayer {
   getMarkerClassName(feature) {
     if (this.state.selected.includes(feature.id)) {
       return 'worker-selected';
-    } else if (feature.properties.inactive) {
+    } else if (!feature.properties.active) {
       return 'worker-inactive';
     } else {
       let workers = this.context.store.getState().assignments.workers;

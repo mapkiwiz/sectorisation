@@ -65,7 +65,7 @@ export class WorkersImportPanel extends React.Component {
       type: 'Feature',
       id: id,
       label: label,
-      properties: { ...properties, capacity: 20, active: true },
+      properties: { ...properties, active: true },
       geometry: geometry
     }
   }

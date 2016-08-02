@@ -34,6 +34,7 @@ export class SwitchInput extends React.Component {
     let new_value = !this.state.value;
     if (this.props.onChange) {
       this.props.onChange({ target: { name: this.props.name, value: new_value }});
+      e.stopPropagation();
     }
     this.setState({ value: new_value });
   }

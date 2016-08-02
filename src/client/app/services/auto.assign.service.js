@@ -3,24 +3,18 @@ import Leaflet from 'leaflet';
 
 export class AutoAssignService {
 
-  store;
-  state;
+  defaultCapacity;
   maxIteration;
   workerLoads;
+  isochrone;
 
-  constructor(store) {
+  constructor(defaultCapacity, isochrone) {
 
-    this.store = store;
-    this.state = store.getState();
-    this.minAssignedCapacity = 2;
-    this.defaultCapacity = this.state.project.defaults['worker.capacity'];
+    this.defaultCapacity = defaultCapacity;
     this.maxIteration = 20;
     this.workerLoads = {};
+    this.isochrone = isochrone;
 
-  }
-
-  isochrone(worker) {
-    return this.store.getState().isochrones.items[worker.id];
   }
 
   distance(a, b) {
@@ -58,16 +52,22 @@ export class AutoAssignService {
 
   costMatrix(distanceMatrix, workers) {
 
+   //  return distanceMatrix.map((row, w) => {
+   //   return row.map(distance => {
+   //     var capacity = this.leftCapacity(workers[w]);
+   //     return this.assignmentCost(distance, capacity);
+   //   });
+   // });
+
     var matrix = [];
 
     for (var w=0; w<distanceMatrix.length; w++) {
       var row = [];
       var capacity = this.leftCapacity(workers[w]);
       for (var t=0; t<distanceMatrix[w].length; t++) {
-        var cost = this.costNewlyAssigned(distanceMatrix, w, t, capacity);
+        var cost = this.assignmentCost(distanceMatrix[w][t], capacity);
         row.push(cost);
       }
-
       matrix.push(row);
     }
 
@@ -75,23 +75,9 @@ export class AutoAssignService {
 
   }
 
-  costAlreadyAssigned(distanceMatrix, w, t, capacity) {
+  assignmentCost(distance, capacity) {
 
-    if (capacity <= 0) {
-      return Math.pow(distanceMatrix[w][t], 2) / this.minAssignedCapacity;
-    } else {
-      return Math.pow(distanceMatrix[w][t], 2) / (1.1*capacity);
-    }
-
-  }
-
-  costNewlyAssigned(distanceMatrix, w, t, capacity) {
-
-    if (capacity <= 0) {
-      return Infinity;
-    } else {
-      return Math.pow(distanceMatrix[w][t], 2) / capacity;
-    }
+    return Math.pow(distance, 2) / capacity;
 
   }
 
@@ -100,7 +86,7 @@ export class AutoAssignService {
   }
 
   workerLoad(worker) {
-    return this.workerLoads[worker.id] || this.state.assignments.workers[worker.id] || 0;
+    return this.workerLoads[worker.id] || 0;
   }
 
   setWorkerLoad(worker, load) {
@@ -111,11 +97,29 @@ export class AutoAssignService {
     return task.tasks && task.tasks.length || 1;
   }
 
-  assign() {
+  findMinCostTask(costMatrix, w, assignment) {
+    var t = undefined, cost = Infinity;
+    for (var k=0; k<costMatrix[w].length; k++) {
+      if ((assignment[k] == undefined) && (costMatrix[w][k] < cost)) {
+          cost = costMatrix[w][k];
+          t = k;
+      }
+    }
+    return t;
+  }
+
+  convertIdToIndex(id, items) {
+    for (var i=0; i<items.length; i++) {
+      if (items[i].id == id) {
+        return i;
+      }
+    }
+    return undefined;
+  }
+
+  assign(workers, tasks, initialAssignments) {
 
     var t,w;
-    let workers = this.state.workers.items;
-    let tasks = this.state.groups.items;
 
     // 1. compute distance matrix and initial cost matrix
     console.log("Computing distance matrix");
@@ -127,81 +131,49 @@ export class AutoAssignService {
 
     // current iteration
     var k = 0;
+    // assignment array by indices
+    // task index -> worker index | undefined
     var assignment = [];
 
     for (t=0; t<tasks.length; t++) {
-      assignment[t] = undefined;
+      let taskId = initialAssignments[tasks[t].id];
+      w = assignment[t] = this.convertIdToIndex(taskId, tasks);
+      if (w) {
+        let weight = this.taskWeight(tasks[t]);
+        this.setWorkerLoad(w, this.workerLoad(w) + weight);
+      }
     }
+
+    // a. find min cost assignment for each worker
+    // b. compute differential cost of assignment
+    // c. if random option greater than diff cost,
+    //    swap assignment
+    // d. repeat until cost is minimum or iterations are exhausted
 
     while (k < this.maxIteration) {
 
-      console.log("Iteration " + k);
-      var changed = 0;
-      var selectedWorker;
+      for (w=0; w<workers.length; w++) {
 
-      // iterate over tasks
-      for (t=0; t<tasks.length; t++) {
+        let minCostTask = this.findMinCostTask(costMatrix, w, assignment);
 
-        var minCost = Infinity;
-        selectedWorker = undefined;
+        if (minCostTask) {
+          let previousWorker = assignment[minCostTask];
+          let newCost = costMatrix[w][minCostTask];
+          let previousCost = previousWorker ? costMatrix[previousWorker][minCostTask] : Infinity;
+          let leftCapacity = this.leftCapacity(workers[w]);
+          let weight = this.taskWeight(tasks[minCostTask]);
 
-        // find worker with min cost for task t
-        for (w=0; w<workers.length; w++) {
-          var cost = costMatrix[w][t];
-          if (cost < minCost) {
-            minCost = cost;
-            selectedWorker = w;
-          }
-        }
-
-        if (selectedWorker !== undefined) {
-
-          var previousWorker = assignment[t];
-
-          if (selectedWorker !== previousWorker) {
-
-            changed++;
-            assignment[t] = selectedWorker;
-
-            this.setWorkerLoad(
-              workers[selectedWorker],
-              this.workerLoad(workers[selectedWorker]) + this.taskWeight(tasks[t])
-            );
-
-            if (previousWorker !== undefined) {
-              this.setWorkerLoad(
-                workers[previousWorker],
-                this.workerLoad(workers[previousWorker]) - this.taskWeight(tasks[t])
-              );
-            }
-
-            // update cost matrix
-            for (var kt=0; kt<tasks.length; kt++) {
-
-              if (previousWorker !== undefined) {
-                costMatrix[previousWorker][kt] = this.costNewlyAssigned(
-                  distanceMatrix,
-                  previousWorker,
-                  kt,
-                  this.leftCapacity(workers[previousWorker]));
+          if (newCost < previousCost) {
+            if (weight <= leftCapacity) {
+              assignment[minCostTask] = w;
+              this.setWorkerLoad(workers[w], this.workerLoad(workers[w]) + weight);
+              if (previousWorker) {
+                this.setWorkerLoad(workers[previousWorker], this.workerLoad(workers[previousWorker]) - weight);
               }
-
-              costMatrix[selectedWorker][kt] = this.costAlreadyAssigned(
-                distanceMatrix,
-                selectedWorker,
-                kt,
-                this.leftCapacity(workers[selectedWorker]));
-
             }
-
           }
-
         }
 
-      } // end iterate over tasks
-
-      if (changed === 0) {
-        break;
       }
 
       // next iteration

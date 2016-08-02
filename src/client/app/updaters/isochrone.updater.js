@@ -15,7 +15,8 @@ export class IsochroneUpdater {
     this.dispose = store.subscribe(() => {
       let selection = _.first(this.store.getState().workers.selected);
       if (selection != this.selection) {
-          this.selectIsochrone(this.findFeature(selection), 0);
+        this.selection = selection;
+        this.selectIsochrone(this.findFeature(selection), 0);
       }
     });
   }

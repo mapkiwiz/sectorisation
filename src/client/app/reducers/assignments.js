@@ -1,4 +1,4 @@
-
+import * as actions from '../actions/assignments';
 
 let initialState = {
   selectedWorker: undefined,
@@ -7,9 +7,8 @@ let initialState = {
   workers: {}
 };
 
-export function assignTaskToSelectedWorker(state, taskId) {
+function assignTaskToWorker(state, taskId, workerId) {
 
-  let workerId = state.selectedWorker;
   if (!workerId) return state;
 
   let previousWorker = state.tasks[taskId];
@@ -25,7 +24,7 @@ export function assignTaskToSelectedWorker(state, taskId) {
 
 }
 
-export function unassignTask(state, taskId) {
+function unassignTask(state, taskId) {
 
   let previousWorker = state.tasks[taskId];
   let st = {
@@ -40,41 +39,42 @@ export function unassignTask(state, taskId) {
 
 }
 
-function assignGroup(state, action) {
-  console.log("Assign group to " + state.selectedWorker);
+function assignGroup(state, group, workerId) {
   // iterate over tasks
-  action.tasks.forEach(taskId => {
-    state = assignTaskToSelectedWorker(state, taskId)
+  group.tasks.forEach(taskId => {
+    state = assignTaskToWorker(state, taskId, workerId)
   });
-  action.group.assignedTo = state.selectedWorker;
+  group.assignedTo = workerId;
   return {
     ...state,
     groups: {
       ...state.groups,
-      [action.group.id]: state.selectedWorker }
+      [group.id]: workerId }
   };
 }
 
-function unassignGroup(state, action) {
-  console.log("Unassign group");
+function unassignGroup(state, group) {
   // iterate over tasks
-  action.tasks.forEach(taskId => {
+  group.tasks.forEach(taskId => {
     state = unassignTask(state, taskId);
   });
-  action.group.assignedTo = undefined;
+  group.assignedTo = undefined;
   return {
     ...state,
     groups: {
       ...state.groups,
-      [action.group.id]: undefined }
+      [group.id]: undefined }
   };
 }
 
 export function assignmentReducer(state = initialState, action) {
+
   switch (action.type) {
+
     case 'WORKER_SELECT':
     case 'WORKER_SELECT_ONE':
       return { ...state, selectedWorker: action.id };
+
     case 'WORKER_TOGGLE':
     case 'WORKER_TOGGLE_ONE':
       if (state.selectedWorker == action.id) {
@@ -82,26 +82,55 @@ export function assignmentReducer(state = initialState, action) {
       } else {
         return { ...state, selectedWorker: action.id };
       }
+
     case 'WORKER_UNSELECT':
       return { ...state, selectedWorker: undefined };
-    case 'GROUP_ASSIGN':
-      // if (action.hasOwnProperty('worker')) {
-      //  state.selectedWorker = action.worker;
-      // }
-      return assignGroup(state, action);
-    case 'GROUP_UNASSIGN':
-      return unassignGroup(state, action);
-    case 'GROUP_TOGGLE_ASSIGN':
-      if (action.group.assignedTo == state.selectedWorker) {
-        return unassignGroup(state, action);
+
+    case actions.assignGroup.ACTION_TYPE:
+      return assignGroup(
+        state,
+        action.group,
+        action.worker && action.worker.id || state.selectedWorker);
+
+    case actions.unassignGroup.ACTION_TYPE:
+      return unassignGroup(state, action.group);
+
+    case actions.toggleGroupAssignment.ACTION_TYPE:
+      var workerId = action.worker && action.worker.id || state.selectedWorker;
+      if (action.group.assignedTo == workerId) {
+        return unassignGroup(state, action.group);
       } else {
-        return assignGroup(state, action);
+        return assignGroup(state, action.group, workerId);
       }
-    case 'TASK_ASSIGN_TO_SELECTED_WORKER':
-      return assignTaskToSelectedWorker(state, action.task.id);
-    case 'TASK_UNASSIGN':
+
+    case actions.assignTask.ACTION_TYPE:
+      var workerId = action.worker && action.worker.id || state.selectedWorker;
+      return assignTaskToWorker(state, action.task.id, workerId);
+
+    case actions.unassignTask.ACTION_TYPE:
       return unassignTask(state, action.task.id);
+
+    case actions.toggleTaskAssignment.ACTION_TYPE:
+      var workerId = action.worker && action.worker.id || state.selectedWorker;
+      if (state.tasks[action.task.id] == workerId) {
+        return unassignTask(state, action.task.id);
+      } else {
+        return assignTaskToWorker(state, action.task.id, workerId);
+      }
+
+    case actions.setGroupAssignments.ACTION_TYPE:
+          for (var groupId in action.assignments) {
+            if (action.assignments.hasOwnProperty(groupId)) {
+              var group = action.groups[groupId];
+              var workerId = action.assignments[groupId];
+              state = assignGroup(state, group, workerId);
+            }
+          }
+          return state;
+
     default:
       return state;
+
   }
+
 }

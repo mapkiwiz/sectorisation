@@ -1,4 +1,4 @@
-<div style="{{ 'width': (2*this.props.width) + 'px' }}"
+<div style="{{ 'width': (2*this.props.width) + 'px', 'background-color': 'white' }}"
      class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on
             bootstrap-switch-id-switch-size bootstrap-switch-animate
             {'bootstrap-switch-' + this.props.size }"

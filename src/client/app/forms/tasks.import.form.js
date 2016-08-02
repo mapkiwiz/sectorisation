@@ -22,6 +22,8 @@ let TasksImportForm = React.createClass({
     return {
       idField: guessField(this.props.headers, /(id)|(us)|(enqtr)/i),
       labelField: guessField(this.props.headers, /(label)|(nom)/i),
+      regionField: guessField(this.props.headers, /(reg)/i),
+      enqueteField: guessField(this.props.headers, /(enquete)|(enq)/i),
       typeCodeCommune: 'insee',
       communeInseeField: guessField(this.props.headers, /(insee)/i),
       postcodeField: guessField(this.props.headers, /(post)/i),

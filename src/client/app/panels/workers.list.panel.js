@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import {MenuLink} from './menu.link';
 import {List} from '../shared/components/list/list.component';
 import {SearchBox} from '../shared/components/list/searchbox.component';
+import {SwitchInput} from '../shared/components/input/switch.component';
 
 function mapStateToWorkers(state) {
   return {
@@ -18,6 +19,12 @@ function renderWorkerItem(item, context) {
       <span className="badge">{ assignments }</span>
       <span style={{ marginLeft: '10px', verticalAlign: 'middle' }}>{ item.label }</span>
       <div className="pull-right">
+        <SwitchInput width={ 45 }
+                     labelOn="ON"
+                     labelOff="OFF"
+                     value={ !!item.properties.active}
+                     onChange={ e => { item.properties.active = e.target.value; } } />
+        <span style={{ marginLeft: '10px' }} />
         <Link to={`/worker/${item.id}/details`} onClick={e => e.stopPropagation() }>
           <span className="glyphicon glyphicon-chevron-right"></span>
         </Link>

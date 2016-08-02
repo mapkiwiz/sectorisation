@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "typings install",
     "clean": "gulp clean",
-    "start": "webpack-dev-server --content-base dist/dev --progress --colors --env prod",
+    "start": "webpack-dev-server --content-base dist/dev --progress --colors",
     "build.dev": "webpack --colors --progress --env dev",
     "build.prod": "webpack --colors --progress -p --env prod",
     "webjar": "gulp maven.install.prod",
@@ -88,6 +88,7 @@
     "es6-promise": "^3.1.2",
     "es6-shim": "0.35.0",
     "fetch-jsonp": "^1.0.0",
+    "heap": "^0.2.6",
     "isomorphic-fetch": "^2.2.1",
     "leaflet": "^0.7.7",
     "lodash": "^4.13.1",

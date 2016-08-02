@@ -1,0 +1,43 @@
+<rt-import name="SwitchInput" from="../shared/components/input/switch.component" />
+
+<form class="form-horizontal" onSubmit="{ e => this.submit(e) }">
+  <div class="form-group">
+    <label for="active" class="col-sm-4 control-label">Enquêteur actif ?</label>
+    <div class="col-sm-8">
+      <SwitchInput name="active"
+                   value="{ this.linkState('active').value }"
+                   onChange="{ e => this.linkState('active').requestChange(e.target.value) }"
+                   labelOn="OUI"
+                   labelOff="NON">
+      </SwitchInput>
+    </div>
+  </div>
+  <rt-virtual rt-if="this.state.active">
+    <div class="form-group">
+      <label for="capacity" class="col-sm-4 control-label">Capacité</label>
+      <div class="col-sm-8">
+        <input name="capacity"
+               type="text"
+               value="{ this.linkState('capacity').value }"
+               onChange="{ e => this.linkState('capacity').requestChange(e.target.value) }"
+               pattern="\d+" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="reach" class="col-sm-4 control-label">Rayon d'action (km)</label>
+      <div class="col-sm-8">
+        <input name="reach"
+               type="text"
+               value="{ this.linkState('reach').value }"
+               onChange="{ e => this.linkState('reach').requestChange(e.target.value) }"
+               pattern="\d+" />
+      </div>
+    </div>
+  </rt-virtual>
+  <hr/>
+  <div class="form-group">
+    <div class="col-md-8 col-md-offset-4">
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </div>
+  </div>
+</form>

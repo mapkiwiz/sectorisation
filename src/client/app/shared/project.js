@@ -59,9 +59,7 @@ export function saveProject(state) {
 }
 
 export function openProjectFile(data) {
-  console.log(data);
   let uncompressed = LZString.decompressFromUTF16(data);
-  console.log(uncompressed);
   let state = JSON.parse(uncompressed);
   console.log(state);
   saveProject(state);
